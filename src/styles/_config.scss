@@ -1,0 +1,36 @@
+// grid main
+$g: .5vw;								    // Main grid step
+
+
+// colors
+$c_dark: #000;			    				// Dark color
+$c_light: #1E1E1E;						  	// Light color
+$c_primary: #94FFF8;						// Primary color
+$c_accent: #E6C029;							// Accent color
+$c_warning: #FF5A52;						// Accent color
+$c_success: #52C22C;						// Success color
+$c_info: #42A5F5;						  	// Success color
+$c_text: #fff;							    // Text color
+$c_text_secondary: #ADADAD;			        // Text secondary color
+$c_text_hint: #636363;  				    // Text hint color
+$c_border: #414141;							// Border color
+$c_bg: #252525;
+$c_bg_alt: #303030;
+
+
+// font-family
+$ff: 'Avenir', Helvetica, Arial, sans-serif;// Main stack
+
+
+// font-size
+$fs_tiny: 1.8vw;				  			// big tiny
+$fs_small: 2.2vw;			  				// big small
+$fs_base: 2.6vw;					  		// main size
+$fs_big: 2.2vw;				  				// big size
+$fs_bigger: 2.4vw;				  			// big size
+$fs_large: 3.2vw;			  				// large size
+$fs_headline: 5vw;		 					// headline
+
+
+// speed animation
+$s: 0.25s;							    	// Main speed animation
