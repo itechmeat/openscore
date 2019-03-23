@@ -3,7 +3,7 @@
     <board-header
       slot="header"
       title="Super Cup"
-      time
+      clock
       :event="7"
       :heal="2"
     />

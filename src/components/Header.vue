@@ -4,10 +4,10 @@
       <h1>{{ title }}</h1>
     </div>
     <div
-      v-if="time"
-      class="time"
+      v-if="clock"
+      class="clock"
     >
-      12:52
+      {{ hours }}<span class="colon">:</span>{{ minutes }}
     </div>
     <div class="info">
       <div
@@ -36,7 +36,7 @@ export default {
       type: String,
       required: true,
     },
-    time: {
+    clock: {
       type: Boolean,
     },
     event: {
@@ -46,6 +46,21 @@ export default {
     heal: {
       type: Number,
       default: 0,
+    },
+  },
+  data() {
+    return {
+      today: new Date(),
+    };
+  },
+  computed: {
+    hours() {
+      const hours = this.today.getHours();
+      return hours < 10 ? '0' + hours : hours;
+    },
+    minutes() {
+      const minutes = this.today.getMinutes();
+      return minutes < 10 ? '0' + minutes : minutes;
     },
   },
 };
@@ -73,12 +88,16 @@ h1 {
   line-height: 1;
 }
 
-.time {
+.clock {
   flex: 1;
   color: $c_text_hint;
   font-size: $fs_headline;
   font-weight: 500;
   text-align: center;
+}
+
+.colon {
+  animation: colon 1s infinite linear;
 }
 
 .info {
@@ -100,5 +119,12 @@ h1 {
 .value {
   padding-left: $g*2;
   color: $c_primary;
+}
+
+@keyframes colon {
+  0% {opacity: 1;}
+  40% {opacity: 1;}
+  50% {opacity: 0;}
+  100% {opacity: 0;}
 }
 </style>
