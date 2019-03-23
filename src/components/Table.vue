@@ -77,7 +77,6 @@ export default {
   &_head {
     background: $c_text_hint;
     color: $c_accent;
-    font-weight: 500;
     text-transform: uppercase;
   }
 
@@ -117,7 +116,7 @@ export default {
   .place_3 & {
     width: 3.2vw;
     height: 3.2vw;
-    line-height: 3.4vw;
+    line-height: 3.2vw;
     border: 2px solid transparent;
     border-radius: 50%;
   }
@@ -142,5 +141,11 @@ export default {
   color: $c_warning;
   font-size: 3.6vw;
   font-weight: 600;
+}
+
+.row_head,
+.name,
+.team {
+  letter-spacing: -0.2vw;
 }
 </style>

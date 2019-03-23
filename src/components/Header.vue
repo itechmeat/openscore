@@ -86,6 +86,7 @@ h1 {
   font-size: $fs_headline;
   font-weight: 500;
   line-height: 1;
+  letter-spacing: -0.5vw;
 }
 
 .clock {
@@ -109,6 +110,7 @@ h1 {
 
 .line {
   margin-left: $g*4;
+  letter-spacing: -0.2vw;
 }
 
 .label,
