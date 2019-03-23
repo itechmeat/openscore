@@ -1,0 +1,5 @@
+{
+  "projects": {
+    "staging": "YOUR_FIREBASE_PROJECT"
+  }
+}
