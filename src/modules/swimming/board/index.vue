@@ -16,8 +16,8 @@
 
 <script>
 import Layout from '@/components/Layout';
-import BoardHeader from '@/components/Header';
-import BoardTable from '@/components/Table';
+import BoardHeader from '@/components/Board/Header';
+import BoardTable from '@/components/Board/Table';
 
 export default {
   components: {

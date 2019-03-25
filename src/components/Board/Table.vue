@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="wrapper">
     <div class="table">
       <div class="row row_head">
         <div
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.wrapper {
   flex: 1;
 }
 
@@ -67,6 +67,7 @@ export default {
   display: table;
   width: 100%;
   height: 100%;
+  font-size: $fs_board_base;
   line-height: 1;
   white-space: nowrap;
 }

@@ -7,13 +7,36 @@ const SPORTS = ['swimming'];
 const MODULES = SPORTS.map(sport => {
   return {
     path: '/' + sport,
-    component: () => import('./views/Match'),
+    component: () => import('./views/Sport'),
     children: [
       { path: '',
         name: sport,
         component: () => import('./modules/' + sport),
+        props: {
+          sport: sport,
+        }
       },
-    ]
+    ],
+  };
+});
+const TOURNAMENTS = SPORTS.map(sport => {
+  return {
+    path: '/' + sport + '/tournaments/',
+    name: sport + '_tournaments',
+    component: () => import('./modules/' + sport),
+    props: {
+      sport: sport,
+    }
+  };
+});
+const TOURNAMENT = SPORTS.map(sport => {
+  return {
+    path: '/' + sport + '/tournaments/:id',
+    name: sport + '_tournament',
+    component: () => import('./modules/' + sport + '/tournaments.vue'),
+    props: {
+      sport: sport,
+    }
   };
 });
 const BOARDS = SPORTS.map(sport => {
@@ -41,6 +64,8 @@ export default new Router({
       component: () => import('./views/Home'),
     },
     ...MODULES,
+    ...TOURNAMENTS,
+    ...TOURNAMENT,
     ...BOARDS,
     ...DESKS,
     {
