@@ -88,7 +88,7 @@
             <v-btn
               flat
               color="primary"
-              @click="saveUntilDate(dateFrom)"
+              @click="saveFromDate(dateFrom)"
             >
               OK
             </v-btn>
@@ -143,23 +143,6 @@
         </v-dialog>
       </v-flex>
     </v-layout>
-
-    <v-layout
-      row
-      wrap
-      align-center
-    >
-      <v-flex xs12>
-        <v-btn
-          large
-          block
-          :disabled="!isFormFilled"
-          @click="$emit('save')"
-        >
-          {{ !isNew ? 'Save Tournament' : 'Create Tournament' }}
-        </v-btn>
-      </v-flex>
-    </v-layout>
   </v-form>
 </template>
 
@@ -193,21 +176,11 @@ export default {
     };
   },
 
-  computed: {
-    isFormFilled() {
-      if (!this.value) {
-        return;
-      }
-      return !!this.value.title && !!this.dateFrom && !!this.value.end_date;
-    },
-  },
-
   watch: {
     value: {
       immediate: true,
       deep: true,
       handler(val) {
-        // console.log(val);
         if (!val) {
           return;
         }
@@ -220,7 +193,7 @@ export default {
   methods: {
     saveFromDate(val) {
       this.$refs.dateFrom.save(val);
-      this.dateFrom = val;
+      this.value.start_date = val;
     },
 
     saveUntilDate(val) {

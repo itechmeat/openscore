@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app dark>
     <layout>
       <v-content>
         <main-header back="/">
@@ -48,7 +48,7 @@
       >
         <v-card>
           <v-card-title>
-            <h2>{{ !isNew ? 'Edit the tournament' : 'Add a new tournament' }}</h2>
+            <h2>{{ !isNew ? 'Edit the Tournament' : 'Add a new Tournament' }}</h2>
           </v-card-title>
           <v-card-text>
             <tournament-form
@@ -58,6 +58,28 @@
             />
           </v-card-text>
           <v-card-actions>
+            <v-btn
+              flat="flat"
+              @click="dialog = false"
+            >
+              Cancel
+            </v-btn>
+            <v-spacer />
+            <v-btn
+              color="red darken-1"
+              flat="flat"
+              @click="dialog = false"
+            >
+              Delete
+            </v-btn>
+            <v-btn
+              color="blue darken-1"
+              flat="flat"
+              :disabled="!isFormFilled"
+              @click="dialog = false"
+            >
+              {{ !isNew ? 'Save Tournament' : 'Create Tournament' }}
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -94,7 +116,7 @@ export default {
       dialog: false,
       tournamentModel: {
         title: '',
-        level: 'regional',
+        level: null,
         start_date: null,
         end_date: null,
         organizer: null,
@@ -151,6 +173,12 @@ export default {
   computed: {
     isNew() {
       return !this.editedTournament.id;
+    },
+    isFormFilled() {
+      if (!this.editedTournament) {
+        return;
+      }
+      return !!this.editedTournament.title && !!this.editedTournament.level && !!this.editedTournament.start_date && !!this.editedTournament.end_date;
     },
   },
   methods: {
