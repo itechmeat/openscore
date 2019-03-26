@@ -1,7 +1,7 @@
 <template>
   <layout>
     <v-content>
-      <main-header :back="'/' + sport">
+      <main-header :back="'/' + sportSlug">
         <template #title>
           Tournament #{{ $route.params.id }}
         </template>
@@ -27,7 +27,7 @@ export default {
     MainHeader,
   },
   props: {
-    sport: {
+    sportSlug: {
       type: String,
       default() {
         return null;

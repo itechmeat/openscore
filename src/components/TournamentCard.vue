@@ -2,7 +2,7 @@
   <v-card>
     <router-link
       class="card-link"
-      :to="'/' + sport + '/tournaments/' + tournament.id"
+      :to="'/' + sportSlug + '/tournaments/' + tournament.id"
     >
       <v-img
         class="blue white--text"
@@ -43,7 +43,7 @@
 <script>
 export default {
   props: {
-    sport: {
+    sportSlug: {
       type: String,
       default() {
         return null;

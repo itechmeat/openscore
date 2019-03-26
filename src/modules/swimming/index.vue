@@ -4,7 +4,7 @@
       <v-content>
         <main-header back="/">
           <template #title>
-            Tournaments
+            {{ sportName }} Tournaments
           </template>
           <template #actions>
             <v-btn
@@ -33,7 +33,7 @@
               :key="tournament.id"
             >
               <tournament-card
-                :sport="sport"
+                :sport-slug="sportSlug"
                 :tournament="tournament"
                 @edit="editTournament"
               />
@@ -101,7 +101,13 @@ export default {
     TournamentForm,
   },
   props: {
-    sport: {
+    sportName: {
+      type: String,
+      default() {
+        return null;
+      },
+    },
+    sportSlug: {
       type: String,
       default() {
         return null;

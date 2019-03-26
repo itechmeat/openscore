@@ -3,56 +3,80 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
-const SPORTS = ['swimming'];
+const SPORTS = [
+  {
+    name: 'Swimming',
+    slug: 'swimming',
+  },
+];
+
 const MODULES = SPORTS.map(sport => {
   return {
-    path: '/' + sport,
+    path: '/' + sport.slug,
     component: () => import('./views/Sport'),
     children: [
-      { path: '',
-        name: sport,
-        component: () => import('./modules/' + sport),
-        props: {
-          sport: sport,
-        }
+      {
+        ...setOptions(
+          sport,
+          '/',
+          sport.slug,
+        ),
+        component: () => import('./modules/' + sport.slug),
       },
     ],
   };
 });
 const TOURNAMENTS = SPORTS.map(sport => {
   return {
-    path: '/' + sport + '/tournaments/',
-    name: sport + '_tournaments',
-    component: () => import('./modules/' + sport),
-    props: {
-      sport: sport,
-    }
+    ...setOptions(
+      sport,
+      '/' + sport.slug + '/tournaments/',
+      sport.slug + '_tournaments',
+    ),
+    component: () => import('./modules/' + sport.slug),
   };
 });
 const TOURNAMENT = SPORTS.map(sport => {
   return {
-    path: '/' + sport + '/tournaments/:id',
-    name: sport + '_tournament',
-    component: () => import('./modules/' + sport + '/tournaments.vue'),
-    props: {
-      sport: sport,
-    }
+    ...setOptions(
+      sport,
+      '/' + sport.slug + '/tournaments/:id',
+      sport.slug + '_tournament',
+    ),
+    component: () => import('./modules/' + sport.slug + '/tournaments.vue'),
   };
 });
 const BOARDS = SPORTS.map(sport => {
   return {
-    path: '/' + sport + '/board',
-    name: sport + '_board',
-    component: () => import('./modules/' + sport + '/board'),
+    ...setOptions(
+      sport,
+      '/' + sport.slug + '/board',
+      sport.slug + '_board',
+    ),
+    component: () => import('./modules/' + sport.slug + '/board'),
   };
 });
 const DESKS = SPORTS.map(sport => {
   return {
-    path: '/' + sport + '/desk',
-    name: sport + '_desk',
-    component: () => import('./modules/' + sport + '/desk'),
+    ...setOptions(
+      sport,
+      '/' + sport.slug + '/desk',
+      sport.slug + '_desk',
+    ),
+    component: () => import('./modules/' + sport.slug + '/desk'),
   };
 });
+
+function setOptions(sport, path, name) {
+  return {
+    path,
+    name,
+    props: {
+      sportName: sport.name,
+      sportSlug: sport.slug,
+    }
+  }
+}
 
 export default new Router({
   mode: 'history',
