@@ -1,60 +1,68 @@
 <template>
-  <layout>
-    <v-content>
-      <main-header back="/">
-        <template #title>
-          Tournaments
-        </template>
-        <template #actions>
-          <v-btn
-            flat
-            @click.stop="addTournament"
-          >
-            Add Tournament
-          </v-btn>
-        </template>
-      </main-header>
+  <v-app>
+    <layout>
+      <v-content>
+        <main-header back="/">
+          <template #title>
+            Tournaments
+          </template>
+          <template #actions>
+            <v-btn
+              flat
+              @click.stop="editTournament(null)"
+            >
+              Add Tournament
+            </v-btn>
+          </template>
+        </main-header>
 
-      <v-container grid-list-xl>
-        <v-layout row>
-          <v-flex xs12>
-            <h2>My tournaments</h2>
-          </v-flex>
-        </v-layout>
+        <v-container grid-list-xl>
+          <v-layout row>
+            <v-flex xs12>
+              <h2>My tournaments</h2>
+            </v-flex>
+          </v-layout>
 
-        <v-layout
-          row
-          wrap
-        >
-          <v-flex
-            v-for="tournament in tmpTournaments"
-            xs4
-            :key="tournament.id"
+          <v-layout
+            row
+            wrap
           >
-            <tournament-card
-              :sport="sport"
-              :tournament="tournament"
-              @edit="editTournament"
+            <v-flex
+              v-for="tournament in tmpTournaments"
+              xs4
+              :key="tournament.id"
+            >
+              <tournament-card
+                :sport="sport"
+                :tournament="tournament"
+                @edit="editTournament"
+              />
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-content>
+
+      <v-dialog
+        v-model="dialog"
+        max-width="600"
+      >
+        <v-card>
+          <v-card-title>
+            <h2>{{ !isNew ? 'Edit the tournament' : 'Add a new tournament' }}</h2>
+          </v-card-title>
+          <v-card-text>
+            <tournament-form
+              v-if="dialog"
+              v-model="editedTournament"
+              :is-new="isNew"
             />
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-content>
-
-    <v-dialog
-      v-model="dialog"
-      max-width="600"
-    >
-      <v-card>
-        <v-card-actions>
-          <tournament-form
-            v-model="editedTournament"
-            :is-new="isNew"
-          />
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </layout>
+          </v-card-text>
+          <v-card-actions>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </layout>
+  </v-app>
 </template>
 
 <script>
@@ -146,13 +154,15 @@ export default {
     },
   },
   methods: {
-    addTournament() {
-      this.editedTournament = this.tournamentModel;
-      this.dialog = true;
-    },
     editTournament(id) {
-      this.editedTournament = this.tmpTournaments.find(tournament => tournament.id === id);
-      this.dialog = true;
+      if (!id) {
+        this.editedTournament = this.tournamentModel;
+      } else {
+        this.editedTournament = this.tmpTournaments.find(tournament => tournament.id === id);
+      }
+      this.$nextTick(() => {
+        this.dialog = true;
+      });
     },
   },
 };

@@ -4,16 +4,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import VueLuxon from 'vue-luxon';
-// import Vuetify, {
-//   VApp, // required
-//   VContainer,
-//   VContent,
-//   VNavigationDrawer,
-//   VFooter,
-//   VToolbar,
-//   VFadeTransition
-// } from 'vuetify/lib';
-// import { Ripple } from 'vuetify/lib/directives';
+import Vuetify from 'vuetify/lib';
+import { Ripple } from 'vuetify/lib/directives';
 
 Vue.config.productionTip = false;
 
@@ -21,20 +13,11 @@ Vue.use(VueLuxon, {
   localeLang: 'en',
 });
 
-// Vue.use(Vuetify, {
-//   components: {
-//     VApp,
-//     VContainer,
-//     VContent,
-//     VNavigationDrawer,
-//     VFooter,
-//     VToolbar,
-//     VFadeTransition
-//   },
-//   directives: {
-//     Ripple
-//   },
-// });
+Vue.use(Vuetify, {
+  directives: {
+    Ripple
+  },
+});
 
 new Vue({
   router,
