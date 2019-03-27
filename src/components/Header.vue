@@ -22,23 +22,60 @@
     <slot />
     <v-spacer />
     <v-toolbar-items
-      v-if="hasActions"
       class="hidden-sm-and-down"
     >
       <slot name="actions" />
+
+      <v-btn
+        v-if="isUserAuthenticated"
+        flat
+        @click="signOut"
+      >
+        Sign Out
+      </v-btn>
+
+      <template v-else>
+        <v-btn
+          flat
+          @click="SignUpDialog = true"
+        >
+          Sign Up
+        </v-btn>
+        <v-btn
+          flat
+          @click="SignInDialog = true"
+        >
+          Sign In
+        </v-btn>
+      </template>
     </v-toolbar-items>
+
+    <v-dialog
+      v-if="!isUserAuthenticated"
+      v-model="SignUpDialog"
+      max-width="600"
+    >
+      <sign-up @close="SignUpDialog = false" />
+    </v-dialog>
+
+    <v-dialog
+      v-if="!isUserAuthenticated"
+      v-model="SignInDialog"
+      max-width="600"
+    >
+      <sign-in @close="SignInDialog = false" />
+    </v-dialog>
   </v-toolbar>
 </template>
 
 <script>
+import SignUp from '@/components/Signup'
+import SignIn from '@/components/Signin'
+
 export default {
-  computed: {
-    hasTitle () {
-      return !!this.$slots.title
-    },
-    hasActions () {
-      return !!this.$slots.actions
-    }
+  components: {
+    SignUp,
+    SignIn,
   },
   props: {
     back: {
@@ -47,6 +84,25 @@ export default {
         return null;
       },
     },
+  },
+  data() {
+    return {
+      SignUpDialog: false,
+      SignInDialog: false,
+    }
+  },
+  computed: {
+    hasTitle () {
+      return !!this.$slots.title
+    },
+    isUserAuthenticated() {
+      return this.$store.getters.isUserAuthenticated;
+    },
+  },
+  methods: {
+    signOut() {
+      this.$store.dispatch(('SIGN_OUT'));
+    }
   },
 }
 </script>

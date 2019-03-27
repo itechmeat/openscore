@@ -6,7 +6,10 @@
           <template #title>
             {{ sportName }} Tournaments
           </template>
-          <template #actions>
+          <template
+            v-if="isUserAuthenticated"
+            #actions
+          >
             <v-btn
               flat
               @click.stop="editTournament(null)"
@@ -122,11 +125,17 @@ export default {
       dialog: false,
       tournamentModel: {
         title: '',
+        description: null,
         level: null,
         start_date: null,
         end_date: null,
         organizer: null,
         cover: null,
+        is_draft: true,
+        is_archived: false,
+        is_public: true,
+        creation_date: null,
+        modification_date: null,
         location: {
           country: null,
           city: null,
@@ -185,6 +194,9 @@ export default {
         return;
       }
       return !!this.editedTournament.title && !!this.editedTournament.level && !!this.editedTournament.start_date && !!this.editedTournament.end_date;
+    },
+    isUserAuthenticated() {
+      return this.$store.getters.isUserAuthenticated;
     },
   },
   methods: {
