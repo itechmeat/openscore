@@ -7,7 +7,7 @@
       <v-img
         class="blue white--text"
         height="200px"
-        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+        :src="tournament.cover"
         :to="$route.name + '/board'"
       >
         <h1 class="headline">

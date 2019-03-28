@@ -6,7 +6,10 @@
           <template #title>
             {{ sportName }} Tournaments
           </template>
-          <template #actions>
+          <template
+            v-if="isUserAuthenticated"
+            #actions
+          >
             <v-btn
               flat
               @click.stop="editTournament(null)"
@@ -24,11 +27,12 @@
           </v-layout>
 
           <v-layout
+            v-if="tournaments.length > 0"
             row
             wrap
           >
             <v-flex
-              v-for="tournament in tmpTournaments"
+              v-for="tournament in tournaments"
               xs4
               :key="tournament.id"
             >
@@ -114,6 +118,9 @@ export default {
       },
     },
   },
+  created() {
+    this.$store.dispatch('LOAD_TOURNAMENTS');
+  },
   beforeMount() {
     this.editedTournament = this.tournamentModel;
   },
@@ -122,61 +129,29 @@ export default {
       dialog: false,
       tournamentModel: {
         title: '',
+        description: null,
         level: null,
         start_date: null,
         end_date: null,
         organizer: null,
         cover: null,
+        is_draft: true,
+        is_archived: false,
+        is_public: true,
+        creation_date: null,
+        modification_date: null,
         location: {
           country: null,
           city: null,
         },
       },
       editedTournament: null,
-      tmpTournaments: [
-        {
-          id: 1,
-          title: 'Regional Coup',
-          level: 'regional',
-          start_date: '2019-02-20',
-          end_date: '2019-02-24',
-          organizer: null,
-          cover: null,
-          location: {
-            country: null,
-            city: null,
-          },
-        },
-        {
-          id: 2,
-          title: 'National Coup',
-          level: 'national',
-          start_date: '2019-02-25',
-          end_date: '2019-02-28',
-          organizer: null,
-          cover: null,
-          location: {
-            country: null,
-            city: null,
-          },
-        },
-        {
-          id: 3,
-          title: 'International Coup',
-          level: 'international',
-          start_date: '2019-03-03',
-          end_date: '2019-03-10',
-          organizer: null,
-          cover: null,
-          location: {
-            country: null,
-            city: null,
-          },
-        },
-      ],
     };
   },
   computed: {
+    tournaments() {
+      return this.$store.getters.getTournaments;
+    },
     isNew() {
       return !this.editedTournament.id;
     },
@@ -186,13 +161,16 @@ export default {
       }
       return !!this.editedTournament.title && !!this.editedTournament.level && !!this.editedTournament.start_date && !!this.editedTournament.end_date;
     },
+    isUserAuthenticated() {
+      return this.$store.getters.isUserAuthenticated;
+    },
   },
   methods: {
     editTournament(id) {
       if (!id) {
         this.editedTournament = this.tournamentModel;
       } else {
-        this.editedTournament = this.tmpTournaments.find(tournament => tournament.id === id);
+        this.editedTournament = this.tournaments.find(tournament => tournament.id === id);
       }
       this.$nextTick(() => {
         this.dialog = true;
