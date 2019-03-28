@@ -9,10 +9,13 @@ import { Ripple } from 'vuetify/lib/directives';
 import firebaseConfig from './config/firebase';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
 
 Vue.config.productionTip = false;
 
-firebase.initializeApp(firebaseConfig);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const db = firebaseApp.firestore();
+Vue.$db = db;
 
 Vue.use(VueLuxon, {
   localeLang: 'en',
