@@ -119,7 +119,11 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('LOAD_TOURNAMENTS');
+    if (!this.$store.getters.getConnectedStatus) {
+      this.$store.dispatch('LOAD_LOCAL_TOURNAMENTS');
+    } else {
+      this.$store.dispatch('LOAD_TOURNAMENTS');
+    }
   },
   beforeMount() {
     this.editedTournament = this.tournamentModel;

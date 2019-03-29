@@ -4,10 +4,16 @@
       <h1>{{ title }}</h1>
     </div>
     <div
-      v-if="clock"
+      v-if="clock && connection"
       class="clock"
     >
       {{ hours }}<span class="colon">:</span>{{ minutes }}
+    </div>
+    <div
+      v-if="!connection"
+      class="connection"
+    >
+      offline
     </div>
     <div class="info">
       <div
@@ -62,6 +68,9 @@ export default {
       const minutes = this.today.getMinutes();
       return minutes < 10 ? '0' + minutes : minutes;
     },
+    connection() {
+      return this.$store.getters.getConnectedStatus;
+    },
   },
 };
 </script>
@@ -89,12 +98,17 @@ h1 {
   letter-spacing: -0.5vw;
 }
 
-.clock {
+.clock,
+.connection {
   flex: 1;
   color: $c_text_hint;
   font-size: $fs_board_headline;
   font-weight: 500;
   text-align: center;
+}
+
+.connection {
+  color: $c_warning;
 }
 
 .colon {

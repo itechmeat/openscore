@@ -32,6 +32,12 @@ new Vue({
   store,
   render: h => h(App),
   created() {
+    window.addEventListener('offline', () => {
+      store.dispatch('setConnected', false)
+    });
+    window.addEventListener('online', () => {
+      store.dispatch('setConnected', true)
+    });
     const vm = this;
     firebase.auth().onAuthStateChanged(function(user) {
       vm.$store.dispatch('STATE_CHANGED', user);

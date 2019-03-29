@@ -13,6 +13,11 @@ export default new Router({
       name: 'home',
       component: () => import('../views/Home'),
     },
+    {
+      path: '/swimming/board',
+      name: 'board',
+      component: () => import('../modules/swimming/board'),
+    },
     ...MODULES,
     ...TOURNAMENTS,
     ...TOURNAMENT,
