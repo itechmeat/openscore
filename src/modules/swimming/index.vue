@@ -64,23 +64,23 @@
           <v-card-actions>
             <v-btn
               flat="flat"
-              @click="dialog = false"
+              color="red darken-1"
+              @click="remove"
             >
-              Cancel
+              Delete
             </v-btn>
             <v-spacer />
             <v-btn
-              color="red darken-1"
               flat="flat"
               @click="dialog = false"
             >
-              Delete
+              Cancel
             </v-btn>
             <v-btn
               color="blue darken-1"
               flat="flat"
               :disabled="!isFormFilled"
-              @click="dialog = false"
+              @click="save"
             >
               {{ !isNew ? 'Save Tournament' : 'Create Tournament' }}
             </v-btn>
@@ -133,17 +133,17 @@ export default {
         level: null,
         start_date: null,
         end_date: null,
-        organizer: null,
+        // organizer: null,
         cover: null,
         is_draft: true,
         is_archived: false,
         is_public: true,
-        creation_date: null,
-        modification_date: null,
-        location: {
-          country: null,
-          city: null,
-        },
+        // creation_date: null,
+        // modification_date: null,
+        // location: {
+        //   country: null,
+        //   city: null,
+        // },
       },
       editedTournament: null,
     };
@@ -159,22 +159,39 @@ export default {
       if (!this.editedTournament) {
         return;
       }
-      return !!this.editedTournament.title && !!this.editedTournament.level && !!this.editedTournament.start_date && !!this.editedTournament.end_date;
+      return !!this.editedTournament.title &&
+        !!this.editedTournament.level &&
+        !!this.editedTournament.start_date &&
+        !!this.editedTournament.end_date;
     },
     isUserAuthenticated() {
       return this.$store.getters.isUserAuthenticated;
     },
+    userId() {
+      return this.$store.getters.userId;
+    }
   },
   methods: {
     editTournament(id) {
       if (!id) {
-        this.editedTournament = this.tournamentModel;
+        this.editedTournament = {
+          ...this.tournamentModel,
+          user_id: this.userId,
+        };
       } else {
         this.editedTournament = this.tournaments.find(tournament => tournament.id === id);
       }
       this.$nextTick(() => {
         this.dialog = true;
       });
+    },
+    save() {
+      this.$store.dispatch('SAVE_TOURNAMENT', this.editedTournament)
+        .then(() => this.dialog = false);
+    },
+    remove() {
+      this.$store.dispatch('REMOVE_TOURNAMENT', this.editedTournament.id)
+        .then(() => this.dialog = false);
     },
   },
 };
