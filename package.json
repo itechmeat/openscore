@@ -47,7 +47,9 @@
       "vue/array-bracket-spacing": "warning",
       "vue/camelcase": "warning",
       "vue/comma-dangle": "warning",
-      "vue/component-name-in-template-casing": "warning"
+      "vue/component-name-in-template-casing": "warning",
+      "vue/max-attributes-per-line": "off",
+      "vue/singleline-html-element-content-newline": "off"
     }
   },
   "postcss": {
