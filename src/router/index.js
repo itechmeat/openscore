@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import { MODULES, TOURNAMENTS, TOURNAMENT, BOARDS, DESKS } from '../router/sports';
+import { MODULES, TOURNAMENTS, TOURNAMENT, BOARDS, CONTROL, DESKS } from '../router/sports';
 
 Vue.use(Router);
 
@@ -17,6 +17,7 @@ export default new Router({
     ...TOURNAMENTS,
     ...TOURNAMENT,
     ...BOARDS,
+    ...CONTROL,
     ...DESKS,
     {
       path: '*',
