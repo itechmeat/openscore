@@ -13,6 +13,11 @@ export default new Router({
       name: 'home',
       component: () => import('../views/Home'),
     },
+    {
+      path: '/control',
+      name: 'control',
+      component: () => import('../modules/swimming/control'),
+    },
     ...MODULES,
     ...TOURNAMENTS,
     ...TOURNAMENT,

@@ -19,25 +19,26 @@ $c_bg_alt: #303030;
 
 
 // font-family
-$ff: 'Jura', 'Avenir', Helvetica, Arial, sans-serif;// Main stack
+$ff: 'Jura', 'Avenir', Helvetica, Arial, sans-serif; // Main stack
+$ff_digit: '7-Segment', 'Avenir', Helvetica, Arial, sans-serif; // Digit stack
 
 
 // font-size
-$fs_tiny: 12px;				  			// big tiny
+$fs_tiny: 12px;				  			    // big tiny
 $fs_small: 14px;			  				// big small
-$fs_base: 16px;					  		// main size
+$fs_base: 16px;					  		    // main size
 $fs_big: 20px;				  				// big size
 $fs_bigger: 24px;				  			// big size
 $fs_large: 32px;			  				// large size
 $fs_headline: 40px;		 					// headline
 
-$fs_board_tiny: 1.8vw;				  			// big tiny
-$fs_board_small: 2.2vw;			  				// big small
-$fs_board_base: 2.6vw;					  		// main size
-$fs_board_big: 2.2vw;				  				// big size
-$fs_board_bigger: 2.4vw;				  			// big size
-$fs_board_large: 3.2vw;			  				// large size
-$fs_board_headline: 5vw;		 					// headline
+$fs_board_tiny: 1.8vw;				    	// big tiny
+$fs_board_small: 2.2vw;			  			// big small
+$fs_board_base: 2.6vw;				  		// main size
+$fs_board_big: 2.2vw;				    	// big size
+$fs_board_bigger: 2.4vw;					// big size
+$fs_board_large: 3.2vw;			  			// large size
+$fs_board_headline: 5vw;		 			// headline
 
 
 // speed animation
