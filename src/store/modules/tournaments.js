@@ -20,9 +20,21 @@ export default {
           });
           commit('SET_TOURNAMENTS', result);
         })
-        // eslint-disable-next-line
-        .catch(error => console.log(error));
+        .then(() => {
+          if (!this.state.tournaments || this.state.tournaments.length === 0) {
+            return;
+          }
+          localStorage.setItem('tournaments', JSON.stringify(this.state.tournaments));
+        })
+        .catch(error => {
+          // eslint-disable-next-line
+          console.log('LOAD_TOURNAMENTS: ERROR:', error)
+        });
     },
+    LOAD_LOCAL_TOURNAMENTS({commit}) {
+      const data = JSON.parse(localStorage.getItem('tournaments'));
+      commit('SET_TOURNAMENTS', data.tournaments);
+    }
   },
   mutations: {
     SET_TOURNAMENTS(state, payload) {
