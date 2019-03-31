@@ -1,4 +1,4 @@
-# sportboard
+# OpenScore
 
 ## Project setup
 ```
