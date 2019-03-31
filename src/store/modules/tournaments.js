@@ -32,7 +32,8 @@ export default {
         });
     },
     LOAD_LOCAL_TOURNAMENTS({commit}) {
-      commit('SET_TOURNAMENTS', JSON.parse(localStorage.getItem('tournaments')));
+      const data = JSON.parse(localStorage.getItem('tournaments'));
+      commit('SET_TOURNAMENTS', data.tournaments);
     }
   },
   mutations: {

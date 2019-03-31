@@ -14,7 +14,7 @@
           {{ tournament.title }}
         </h1>
         <p>{{ tournament.level }}</p>
-        <p>{{ startDate | luxon:format('dd LLLL y, t') }} - {{ endDate | luxon:format('dd LLLL y, t') }}</p>
+        <p v-if="connection">{{ startDate | luxon:format('dd LLLL y, t') }} - {{ endDate | luxon:format('dd LLLL y, t') }}</p>
         <p>{{ tournament.start_date }}</p>
       </v-img>
     </router-link>
@@ -58,6 +58,9 @@ export default {
     },
   },
   computed: {
+    connection() {
+      return this.$store.getters.getConnectedStatus;
+    },
     startDate() {
       return this.tournament.start_date.toDate().toISOString();
     },

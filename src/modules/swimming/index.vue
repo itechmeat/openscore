@@ -11,6 +11,7 @@
             #actions
           >
             <v-btn
+              v-if="connection"
               flat
               @click.stop="editTournament(null)"
             >
@@ -153,6 +154,9 @@ export default {
     };
   },
   computed: {
+    connection() {
+      return this.$store.getters.getConnectedStatus;
+    },
     tournaments() {
       return this.$store.getters.getTournaments;
     },
