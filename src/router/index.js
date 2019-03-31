@@ -14,9 +14,9 @@ export default new Router({
       component: () => import('../views/Home'),
     },
     {
-      path: '/swimming/board',
-      name: 'board',
-      component: () => import('../modules/swimming/board'),
+      path: '/control',
+      name: 'control',
+      component: () => import('../modules/swimming/control'),
     },
     ...MODULES,
     ...TOURNAMENTS,
