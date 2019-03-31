@@ -107,6 +107,10 @@ h1 {
   text-align: center;
 }
 
+.clock {
+  font-family: $ff_digit;
+}
+
 .connection {
   color: $c_warning;
 }
@@ -134,6 +138,8 @@ h1 {
 
 .value {
   padding-left: $g*2;
+  font-family: $ff_digit;
+  font-weight: 500;
   color: $c_primary;
 }
 

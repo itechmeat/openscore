@@ -25,10 +25,7 @@
           :key="column"
         >
           <span v-if="!player[column]">–</span>
-          <span
-            v-else
-            :class="column"
-          >
+          <span v-else :class="column">
             {{ player[column] }}
           </span>
         </div>
@@ -47,12 +44,27 @@ export default {
       },
     },
   },
+
+  data() {
+    return {
+      excludedCells: ['fail'],
+    };
+  },
+
   computed: {
     players() {
       return this.match.concat().sort((a, b) => a.line - b.line);
     },
+
     columns() {
-      return Object.keys(this.match[0]);
+      const list = this.match[0];
+      if (list.length === 0) {
+        return;
+      }
+      return Object.keys(list).map(cell => {
+        if (this.excludedCells.includes(cell)) return;
+        return cell;
+      }).filter(cell => cell !== undefined);
     },
   },
 };
@@ -140,8 +152,9 @@ export default {
 
 .time {
   color: $c_warning;
+  font-family: $ff_digit;
   font-size: 3.6vw;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .row_head,
