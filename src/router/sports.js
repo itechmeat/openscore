@@ -50,6 +50,17 @@ export const BOARDS = SPORTS.map(sport => {
   };
 });
 
+export const CONTROL = SPORTS.map(sport => {
+  return {
+    ..._setOptions(
+      sport,
+      '/' + sport.slug + '/control',
+      sport.slug + '_control',
+    ),
+    component: () => import('../modules/' + sport.slug + '/control'),
+  };
+});
+
 export const DESKS = SPORTS.map(sport => {
   return {
     ..._setOptions(
