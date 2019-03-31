@@ -16,7 +16,7 @@ export default {
         .createUserWithEmailAndPassword(payload.email, payload.password)
         .then(user => {
           // eslint-disable-next-line
-          console.log(user);
+          console.log('SIGN_UP', user);
           commit('SET_PROCESSING', false);
         })
         .catch(function(error) {
@@ -33,7 +33,7 @@ export default {
         .signInWithEmailAndPassword(payload.email, payload.password)
         .then(user => {
           // eslint-disable-next-line
-          console.log(user);
+          console.log('SIGN_IN', user);
           commit('SET_PROCESSING', false);
         })
         .catch(function(error) {
@@ -66,5 +66,6 @@ export default {
   },
   getters: {
     isUserAuthenticated: (state) => state.user.isAuthenticated,
+    userId: (state) => state.user.uid,
   },
 };

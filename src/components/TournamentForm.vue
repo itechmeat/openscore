@@ -1,14 +1,6 @@
 <template>
-  <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-  >
-    <v-layout
-      row
-      wrap
-      align-center
-    >
+  <v-form v-model="valid" ref="form" lazy-validation>
+    <v-layout row wrap align-center>
       <v-flex xs12>
         <v-text-field
           v-model="value.title"
@@ -20,127 +12,65 @@
       </v-flex>
     </v-layout>
 
-    <v-layout
-      row
-      wrap
-      align-center
-    >
+    <v-layout row wrap align-center>
       <v-flex xs12>
         <p>Tournament Level</p>
-        <v-radio-group
-          v-model="value.level"
-          row
-        >
-          <v-radio
-            label="Regional"
-            value="regional"
-            color="green"
-          />
-          <v-radio
-            label="National"
-            value="national"
-            color="blue"
-          />
-          <v-radio
-            label="International"
-            value="international"
-            color="red"
-          />
+        <v-radio-group v-model="value.level" row>
+          <v-radio label="Friendly" value="friendly" color="yellow" />
+          <v-radio label="Regional" value="regional" color="green" />
+          <v-radio label="National" value="national" color="blue" />
+          <v-radio label="International" value="international" color="red" />
         </v-radio-group>
       </v-flex>
     </v-layout>
 
-    <v-layout
-      row
-      wrap
-    >
-      <v-flex xs12>
-        <v-dialog
-          ref="dateFrom"
+    <v-layout row wrap>
+      <v-flex xs5>
+        <v-menu
           v-model="dateFromMenu"
-          :return-value.sync="dateFrom"
-          persistent
+          :close-on-content-click="false"
+          :nudge-right="40"
           lazy
+          transition="scale-transition"
+          offset-y
           full-width
-          width="290px"
+          min-width="290px"
         >
           <template v-slot:activator="{ on }">
             <v-text-field
-              v-model="dateFrom"
+              v-model="value.start_date"
               label="From"
               prepend-icon="event"
               readonly
               v-on="on"
             />
           </template>
-          <v-date-picker
-            v-model="dateFrom"
-            scrollable
-          >
-            <v-spacer />
-            <v-btn
-              flat
-              color="primary"
-              @click="dateFromMenu = false"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              flat
-              color="primary"
-              @click="saveFromDate(dateFrom)"
-            >
-              OK
-            </v-btn>
-          </v-date-picker>
-        </v-dialog>
+          <v-date-picker v-model="value.start_date" @input="dateFromMenu = false" />
+        </v-menu>
       </v-flex>
-    </v-layout>
-
-    <v-layout
-      row
-      wrap
-    >
-      <v-flex xs12>
-        <v-dialog
-          ref="dateUntil"
+      <v-flex xs1 />
+      <v-flex xs5>
+        <v-menu
           v-model="dateUntilMenu"
-          :return-value.sync="dateUntil"
-          persistent
+          :close-on-content-click="false"
+          :nudge-right="40"
           lazy
+          transition="scale-transition"
+          offset-y
           full-width
-          width="290px"
+          min-width="290px"
         >
           <template v-slot:activator="{ on }">
             <v-text-field
-              v-model="dateUntil"
+              v-model="value.end_date"
               label="Until"
               prepend-icon="event"
               readonly
               v-on="on"
             />
           </template>
-          <v-date-picker
-            v-model="dateUntil"
-            scrollable
-          >
-            <v-spacer />
-            <v-btn
-              flat
-              color="primary"
-              @click="dateUntilMenu = false"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              flat
-              color="primary"
-              @click="saveUntilDate(dateUntil)"
-            >
-              OK
-            </v-btn>
-          </v-date-picker>
-        </v-dialog>
+          <v-date-picker v-model="value.end_date" @input="dateUntilMenu = false" />
+        </v-menu>
       </v-flex>
     </v-layout>
   </v-form>
@@ -163,43 +93,14 @@ export default {
       valid: false,
       titleRules: [
         v => !!v || 'Title is required',
-        v => v.length >= 5 || 'Title can\'t be less than 5 characters'
+        v => v.length >= 3 || 'Title can\'t be less than 3 characters'
       ],
-      hdpList: [5, 10, 20],
-      dateFrom: null,
       dateFromMenu: false,
-      dateUntil: null,
       dateUntilMenu: false,
       rules: {
         required: value => !!value || 'Required.',
       },
     };
-  },
-
-  watch: {
-    value: {
-      immediate: true,
-      deep: true,
-      handler(val) {
-        if (!val) {
-          return;
-        }
-        this.dateFrom = val.start_date;
-        this.dateUntil = val.end_date;
-      },
-    },
-  },
-
-  methods: {
-    saveFromDate(val) {
-      this.$refs.dateFrom.save(val);
-      this.value.start_date = val;
-    },
-
-    saveUntilDate(val) {
-      this.$refs.dateUntil.save(val);
-      this.value.end_date = val;
-    },
   },
 };
 </script>
