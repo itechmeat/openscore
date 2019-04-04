@@ -1,31 +1,40 @@
 <template>
-  <div class="control">
+  <div v-if="match" class="control">
     <div
-      class="start"
+      class="main"
       :class="[{'started': isStarted}, {'finished': isFinished}]"
-      @click="startMatch"
     >
-      <stop-watch
-        v-show="isStarted || isFinished"
-        ref="stopWatch"
-        class="digits"
-        minutes
-        @start="setStartTime"
-        @stop="setStopTime"
-        @lap="setLapTime"
-      />
-      <span v-if="!isStarted && !isFinished" class="label" :class="{'counter': isReady}">
-        {{ buttonText }}
-      </span>
+      <div
+        class="start"
+        @click="startMatch"
+      >
+        <stop-watch
+          v-show="isStarted || isFinished"
+          ref="stopWatch"
+          class="digits"
+          minutes
+          @start="setStartTime"
+          @stop="setStopTime"
+          @lap="setLapTime"
+        />
+        <span v-if="!isStarted && !isFinished" class="label" :class="{'counter': isReady}">
+          {{ buttonText }}
+        </span>
+      </div>
+
+      <div class="actions">
+        <div class="action reset" @click="resetMatch">R</div>
+        <div class="action next" @click="nextMatch">N</div>
+      </div>
     </div>
 
-    <div v-if="players.length > 0" class="grid">
+    <div class="grid">
       <Player
-        v-for="player in players"
+        v-for="player in orderedPlayers"
         :key="player.line"
         :player="player"
-        :is-failed-button-visible="!player.time && !player.fail && player.access && isFailedButtonsVisible"
-        @finish="finish(player.line)"
+        :is-failed-button-visible="!isWait && !player.time && !player.fail && player.access && isFailedButtonsVisible"
+        @finish="pushLap(player.line)"
         @fail="fail(player.line)"
       />
     </div>
@@ -35,9 +44,8 @@
 <script>
 import StopWatch from '../../../components/StopWatch'
 import Player from './_components/Player'
-import MATCH from "../../../data/match";
 
-const STAGES = [
+const STEPS = [
   'wait',
   'ready',
   'started',
@@ -49,31 +57,46 @@ export default {
     StopWatch,
     Player,
   },
+
+  beforeCreate() {
+    this.$store.dispatch('loadFakeMatchControl');
+  },
+
   data() {
     return {
-      match: MATCH,
-      state: 0,
       number: 3,
       readyTime: 3000,
       failedTimeAfterStart: 5000,
       isFailedButtonsVisible: false,
-
       startTimestamp: 0,
       stopTimestamp: 0,
     };
   },
 
   computed: {
+    match() {
+      return this.$store.getters.getFakeMatchControl;
+    },
+
+    status() {
+      if (!this.match) return;
+      return this.match.status;
+    },
+
+    isWait() {
+      return this.status === STEPS[0];
+    },
+
     isReady() {
-      return STAGES[this.state] === 'ready'
+      return this.status === STEPS[1];
     },
 
     isStarted() {
-      return STAGES[this.state] === 'started'
+      return this.status === STEPS[2];
     },
 
     isFinished() {
-      return STAGES[this.state] === 'finished'
+      return this.status === STEPS[3];
     },
 
     buttonText() {
@@ -92,38 +115,47 @@ export default {
       return 'To Start';
     },
 
-    // @Todo: remove it after Firebase connection!
-    players() {
-      return this.match.map(player => {
-        player.time = null;
-        player.fail = false;
-        player.access = true;
-        return player;
-      });
+    orderedPlayers() {
+      return [...this.match.players].sort((a, b) => a.line - b.line);
+    },
+
+    places() {
+      if (!this.match.players) return;
+      return this.match.players
+        .map(p => {
+          return {
+            line: p.line,
+            ms: p.time ? Number(p.time.replace(':', '').replace(':', '')) : undefined,
+          }
+        })
+        .filter(item => item.ms !== undefined)
+        .sort((a, b) => a.ms - b.ms);
     },
   },
 
   watch: {
     match: {
+      immediate: true,
       deep: true,
       handler(val) {
+        if (!val) return;
+
         let finished = 0;
 
-        val.forEach(item => {
-          if (item.time || item.fail) {
-            finished++;
-          }
+        val.players.forEach(item => {
+          if (item.time || item.fail) finished++;
         });
 
-        if (finished === val.length) {
-          this.state = 3;
+        if (finished === val.players.length && this.stopTimestamp === 0) {
+          this.$store.dispatch('changeFakeMatchControlStatus', STEPS[3]);
           this.$refs.stopWatch.stop();
+          this.setPlaces();
         }
       },
     },
 
-    state(val) {
-      if (val === 1) {
+    status(val) {
+      if (val === STEPS[1]) {
         this.isFailedButtonsVisible = true;
         setTimeout(() => {
           this.isFailedButtonsVisible = false;
@@ -133,19 +165,22 @@ export default {
   },
 
   methods: {
+    save() {
+      this.$store.dispatch('saveFakeMatchControl', this.match);
+    },
+
     startMatch() {
-      if (this.state > 0) {
+      if (this.status !== 'wait') {
         return;
       }
 
-      this.state = 1;
-
+      this.$store.dispatch('changeFakeMatchControlStatus', STEPS[1]);
 
       const count = () => {
         setTimeout(() => {
           this.number--;
           if (this.number === 0) {
-            this.state = 2;
+            this.$store.dispatch('changeFakeMatchControlStatus', STEPS[2]);
             this.$refs.stopWatch.start();
             return;
           }
@@ -154,39 +189,75 @@ export default {
       };
 
       count();
+
+      this.save();
     },
 
     fail(line) {
-      const player = this.match.find(player => player.line === line);
-      player.fail = true;
+      const player = this.match.players.find(player => player.line === line);
+      this.$store.dispatch('setFakeMatchControlFail', player.name);
+      this.save();
     },
 
-    finish(line) {
+    pushLap(line) {
       this.$refs.stopWatch.lap(line);
     },
 
     setStartTime(timestamp) {
       this.startTimestamp = timestamp;
+      this.save();
     },
 
     setStopTime(timestamp) {
       this.stopTimestamp = timestamp;
+      this.save();
     },
 
     setLapTime(timestamp, time, id) {
-      const player = this.match.find(player => player.line === id);
+      const player = this.match.players.find(player => player.line === id);
 
       if (!this.isStarted || player.time || player.fail || !player.access) {
         return;
       }
 
-      player.time = time;
-    }
+      this.$store.dispatch('setFakeMatchControlTime', {name: player.name, time});
+      this.save();
+    },
+
+    setPlaces() {
+      this.match.players.forEach(player => {
+        const place = this.places.findIndex(item => item.line === player.line) + 1;
+        if (place) {
+          player.place = place;
+        }
+      });
+      this.save();
+    },
+
+    nextMatch() {
+      this.$store.dispatch('nextFakeMatchControl');
+      this.updateAll();
+    },
+
+    resetMatch() {
+      this.$store.dispatch('resetFakeMatchControl');
+      this.updateAll();
+    },
+
+    updateAll() {
+      this.number = 3;
+      this.$refs.stopWatch.reset();
+      this.$store.dispatch('saveFakeMatchControl', this.match);
+      this.startTimestamp = 0;
+      this.stopTimestamp = 0;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+$mainSize: 20vh;
+
 .control {
   overflow: hidden;
   display: flex;
@@ -201,15 +272,11 @@ export default {
   user-select: none;
 }
 
-.start {
-  flex: 0 0 20vh;
+.main {
+  flex: 0 0 $mainSize;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
   background: $c_success;
-  font-size: 10vw;
-  text-transform: uppercase;
-  cursor: pointer;
 
   &.started {
     background: $c_accent;
@@ -220,13 +287,23 @@ export default {
   }
 }
 
+.start {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10vw;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
 .label {
   &.counter {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 16vh;
-    height: 16vh;
+    width: $mainSize / 1.6;
+    height: $mainSize / 1.6;
     font-family: $ff_digit;
     font-size: 12vh;
     font-weight: 500;
@@ -238,6 +315,32 @@ export default {
   font-family: $ff_digit;
   font-size: 18vw;
   font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 0 0 $mainSize / 2;
+}
+
+.action {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $mainSize / 2;
+  border-left: 2px solid $c_bg;
+
+  &.reset {
+    background: $c_warning;
+    border-bottom: 1px solid $c_bg;
+  }
+
+  &.next {
+    background: $c_info;
+    border-top: 1px solid $c_bg;
+  }
 }
 
 .grid {

@@ -3,42 +3,51 @@
     <div class="main">
       <h1>{{ title }}</h1>
     </div>
-    <div
-      v-if="clock && connection"
-      class="clock"
-    >
-      {{ hours }}<span class="colon">:</span>{{ minutes }}
-    </div>
-    <div
-      v-if="!connection"
-      class="connection"
-    >
+
+    <div v-if="!connection" class="connection">
       offline
     </div>
+
+    <div v-if="clock && !isStopWatchVisible && connection" class="clock">
+      {{ hours }}<span class="colon">:</span>{{ minutes }}
+    </div>
+
+    <stop-watch
+      v-show="isStopWatchVisible && connection"
+      ref="stopWatch"
+      class="clock stop-watch"
+      :class="{'finished': status === 'finished'}"
+      minutes
+    />
+
     <div class="info">
-      <div
-        v-if="event"
-        class="line event"
-      >
+      <div v-if="event" class="line event">
         <span class="label">Event</span>
         <span class="value">{{ event }}
         </span>
       </div>
-      <div
-        v-if="heal"
-        class="line heal"
-      >
-        <span class="label">Heal</span>
-        <span class="value">{{ heal }}</span>
+      <div v-if="heat" class="line heat">
+        <span class="label">Heat</span>
+        <span class="value">{{ heat }}</span>
       </div>
     </div>
   </header>
 </template>
 
 <script>
+import StopWatch from '../StopWatch'
+
 export default {
+  components: {
+    StopWatch,
+  },
+
   props: {
     title: {
+      type: String,
+      required: true,
+    },
+    status: {
       type: String,
       required: true,
     },
@@ -49,27 +58,46 @@ export default {
       type: Number,
       default: 0,
     },
-    heal: {
+    heat: {
       type: Number,
       default: 0,
     },
   },
+
   data() {
     return {
       today: new Date(),
     };
   },
+
   computed: {
     hours() {
       const hours = this.today.getHours();
       return hours < 10 ? '0' + hours : hours;
     },
+
     minutes() {
       const minutes = this.today.getMinutes();
       return minutes < 10 ? '0' + minutes : minutes;
     },
+
     connection() {
       return this.$store.getters.getConnectedStatus;
+    },
+
+    isStopWatchVisible() {
+      return this.status === 'started';
+    },
+  },
+
+  watch: {
+    status(val) {
+      if (val === 'started') {
+        this.$refs.stopWatch.start();
+      }
+      if (val === 'finished') {
+        this.$refs.stopWatch.stop();
+      }
     },
   },
 };
@@ -111,8 +139,13 @@ h1 {
   font-family: $ff_digit;
 }
 
-.connection {
+.connection,
+.stop-watch {
   color: $c_warning;
+}
+
+.stop-watch.finished {
+  color: $c_success;
 }
 
 .colon {

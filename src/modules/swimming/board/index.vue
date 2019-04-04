@@ -1,15 +1,19 @@
 <template>
   <layout>
     <board-header
+      v-if="match"
       slot="header"
-      title="Super Cup"
       clock
-      :event="7"
-      :heal="2"
+      :title="match.title"
+      :status="match.status"
+      :event="match.event"
+      :heat="match.heat"
     />
 
     <board-table
-      :match="match"
+      v-if="match && match.players.length > 0"
+      :players="match.players"
+      :status="match.status"
     />
   </layout>
 </template>
@@ -19,18 +23,21 @@ import Layout from '@/components/Layout';
 import BoardHeader from '@/components/Board/Header';
 import BoardTable from '@/components/Board/Table';
 
-import MATCH from "../../../data/match";
-
 export default {
   components: {
     Layout,
     BoardHeader,
     BoardTable,
   },
-  data() {
-    return {
-      match: MATCH,
-    };
+
+  beforeCreate() {
+    this.$store.dispatch('loadFakeMatchBoard');
+  },
+
+  computed: {
+    match() {
+      return this.$store.getters.getFakeMatchBoard;
+    },
   },
 };
 </script>

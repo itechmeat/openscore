@@ -1,16 +1,17 @@
 <template>
-  <div v-if="player" class="cell" @click="$emit('finish')">
+  <div v-if="player" class="cell" @click="handleFinish">
     <div
       class="button"
       :class="[{'finished': !!player.time}, {'failed': player.fail}, {'passive': !player.access}]"
     >
       <div class="progress" :class="{'finished': !!player.time}" />
+      <div class="line">{{ player.line }}.</div>
       <div class="name">{{ player.name }}</div>
-      <div v-if="player.time" class="time">{{ player.time }}</div>
+      <div v-if="player.time !== ''" class="time">{{ player.time }}</div>
       <div v-if="player.fail" class="failed">Failed</div>
       <div
-        v-if="isFailedButtonVisible"
         class="fail"
+        :class="{'visible': isFailedButtonVisible}"
         @click.self="$emit('fail')"
       >
         Fail
@@ -20,6 +21,8 @@
 </template>
 
 <script>
+const PAUSE_AFTER_FAILING_TIME = 1000;
+
 export default {
   props: {
     player: {
@@ -30,16 +33,42 @@ export default {
     },
     isFailedButtonVisible: Boolean,
   },
+
+  data() {
+    return {
+      canFinish: false,
+    };
+  },
+
+  watch: {
+    isFailedButtonVisible(val) {
+      if (val) {
+        return;
+      }
+      setTimeout(() => {
+        this.canFinish = true;
+      }, PAUSE_AFTER_FAILING_TIME);
+    },
+  },
+
+  methods: {
+    handleFinish() {
+      if (!this.canFinish) return;
+      this.$emit('finish');
+    },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+$mainSize: 20vh;
+
 .cell {
   flex: 1;
   display: flex;
   align-items: center;
   height: 16%;
-  max-height: 20vh;
+  max-height: $mainSize;
   margin-top: 2px;
 }
 
@@ -76,11 +105,21 @@ export default {
   }
 }
 
+.line,
 .name,
 .time,
 .fail,
 .failed {
   position: relative;
+}
+
+.line {
+  flex: 0 0 6vw;
+}
+
+.name {
+  flex: 1;
+  letter-spacing: -.4vw;
 }
 
 .time {
@@ -93,10 +132,25 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
   height: 100%;
-  width: 20vw;
-  margin-right: -2vh;
+  width: $mainSize / 2;
+  border-left: 2px solid $c_bg;
   background: $c_warning;
+  text-align: center;
   cursor: pointer;
+  transform: translateX(calc(#{$mainSize} + 2px));
+  transition: transform .2s ease-out;
+  will-change: transform;
+
+  &.visible {
+    transform: translateX(0);
+  }
+
+  .failed & {
+    display: none;
+  }
 }
 </style>

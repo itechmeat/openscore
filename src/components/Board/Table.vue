@@ -5,29 +5,49 @@
         <div
           v-for="column in columns"
           class="cell"
-          :class="'cell_' + column"
-          :key="column"
+          :class="'cell_' + column.name"
+          :key="column.name"
         >
-          {{ column }}
+          {{ column.label }}
         </div>
       </div>
 
       <div
-        v-for="player in players"
+        v-for="player in orderedPlayers"
         class="row"
-        :class="[{'row_active': player.time}, !player.place ? '' : 'place_' + player.place ]"
+        :class="[
+          {'row_active': player.time},
+          {'row_failed': player.fail},
+          !player.place ? '' : 'place_' + player.place,
+        ]"
         :key="player.line"
       >
         <div
           v-for="column in columns"
           class="cell"
-          :class="'cell_' + column"
-          :key="column"
+          :class="'cell_' + column.name"
+          :key="column.name"
         >
-          <span v-if="!player[column]">–</span>
-          <span v-else :class="column">
-            {{ player[column] }}
-          </span>
+          <template v-if="column.name === 'time'">
+            <span v-if="!player.fail && !player.time">-</span>
+            <span v-else :class="player.fail ? 'fail' : 'time'">
+              {{ player.fail ? 'Failed' : player.time }}
+            </span>
+          </template>
+          <template v-else-if="column.name === 'place'">
+            <span :class="[player.fail ? 'place-fail' : 'place-' + player.place]">
+              <template v-if="status !== 'finished' || player.fail">-</template>
+              <template v-else>
+                {{ player.place }}
+              </template>
+            </span>
+          </template>
+          <template v-else>
+            <span v-if="!player[column.name]">–</span>
+            <span v-else :class="column.name">
+              {{ player[column.name] }}
+            </span>
+          </template>
         </div>
       </div>
     </div>
@@ -37,34 +57,49 @@
 <script>
 export default {
   props: {
-    match: {
+    players: {
       type: Array,
       default() {
         return [];
       },
     },
+    status: {
+      type: String,
+      default: null,
+    },
   },
 
   data() {
     return {
-      excludedCells: ['fail'],
+      excludedCells: ['fail', 'access'],
+      columns: [
+        {
+          name: 'line',
+          label: 'Line',
+        },
+        {
+          name: 'place',
+          label: 'Place',
+        },
+        {
+          name: 'name',
+          label: 'Name',
+        },
+        {
+          name: 'team',
+          label: 'Team',
+        },
+        {
+          name: 'time',
+          label: 'Time',
+        },
+      ],
     };
   },
 
   computed: {
-    players() {
-      return this.match.concat().sort((a, b) => a.line - b.line);
-    },
-
-    columns() {
-      const list = this.match[0];
-      if (list.length === 0) {
-        return;
-      }
-      return Object.keys(list).map(cell => {
-        if (this.excludedCells.includes(cell)) return;
-        return cell;
-      }).filter(cell => cell !== undefined);
+    orderedPlayers() {
+      return this.players.concat().sort((a, b) => a.line - b.line);
     },
   },
 };
@@ -96,6 +131,10 @@ export default {
   &:nth-child(even) {
     background: $c_bg_alt;
   }
+
+  &_failed {
+    color: $c_warning;
+  }
 }
 
 .cell {
@@ -121,37 +160,36 @@ export default {
   line-height: calc(3.2vw + 8px);
 }
 
-.place {
-  display: inline-block;
+.place-1,
+.place-2,
+.place-3 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2vw;
+  height: 3.2vw;
+  line-height: 1;
+  border: 2px solid transparent;
+  border-radius: 50%;
+}
 
-  .place_1 &,
-  .place_2 &,
-  .place_3 & {
-    width: 3.2vw;
-    height: 3.2vw;
-    line-height: 3.2vw;
-    border: 2px solid transparent;
-    border-radius: 50%;
-  }
+.place-1 {
+  border-color: $c_accent;
+  color: $c_accent;
+}
 
-  .place_1 & {
-    border-color: $c_accent;
-    color: $c_warning;
-  }
+.place-2 {
+  border-color: $c_text_secondary;
+  color: $c_accent;
+}
 
-  .place_2 & {
-    border-color: $c_text_secondary;
-    color: $c_warning;
-  }
-
-  .place_3 & {
-    border-color: #ffa5a7;
-    color: $c_warning;
-  }
+.place-3 {
+  border-color: #ffa5a7;
+  color: $c_accent;
 }
 
 .time {
-  color: $c_warning;
+  color: $c_success;
   font-family: $ff_digit;
   font-size: 3.6vw;
   font-weight: 500;
