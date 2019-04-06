@@ -1,17 +1,7 @@
 <template>
-  <v-toolbar
-    flat
-    class="transparent brand"
-    :height="64"
-  >
-    <v-btn
-      v-if="!!back"
-      icon
-      :to="back"
-    >
-      <v-icon color="white--text">
-        arrow_back
-      </v-icon>
+  <v-toolbar flat class="transparent brand" :height="64">
+    <v-btn v-if="!!back" icon :to="back">
+      <v-icon color="white--text">arrow_back</v-icon>
     </v-btn>
     <v-toolbar-title v-if="hasTitle">
       <h1 class="white--text">
@@ -21,48 +11,22 @@
     <v-spacer />
     <slot />
     <v-spacer />
-    <v-toolbar-items
-      class="hidden-sm-and-down"
-    >
+    <v-toolbar-items>
       <slot name="actions" />
 
-      <v-btn
-        v-if="isUserAuthenticated"
-        flat
-        @click="signOut"
-      >
-        Sign Out
-      </v-btn>
+      <v-btn v-if="isUserAuthenticated" flat>Sign Out</v-btn>
 
       <template v-else>
-        <v-btn
-          flat
-          @click="SignUpDialog = true"
-        >
-          Sign Up
-        </v-btn>
-        <v-btn
-          flat
-          @click="SignInDialog = true"
-        >
-          Sign In
-        </v-btn>
+        <v-btn flat @click="SignUpDialog = true">Sign Up</v-btn>
+        <v-btn flat @click="SignInDialog = true">Sign In</v-btn>
       </template>
     </v-toolbar-items>
 
-    <v-dialog
-      v-if="!isUserAuthenticated"
-      v-model="SignUpDialog"
-      max-width="600"
-    >
+    <v-dialog v-if="!isUserAuthenticated" v-model="SignUpDialog" max-width="600">
       <sign-up @close="SignUpDialog = false" />
     </v-dialog>
 
-    <v-dialog
-      v-if="!isUserAuthenticated"
-      v-model="SignInDialog"
-      max-width="600"
-    >
+    <v-dialog v-if="!isUserAuthenticated" v-model="SignInDialog" max-width="600">
       <sign-in @close="SignInDialog = false" />
     </v-dialog>
   </v-toolbar>

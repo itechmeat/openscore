@@ -26,7 +26,16 @@
         :disabled="false"
         :to="$route.name + '/board'"
       >
-        Control panel
+        Board
+      </v-btn>
+      <v-btn
+        flat
+        color="primary"
+        target="_blank"
+        :disabled="false"
+        :to="$route.name + '/control'"
+      >
+        Panel
       </v-btn>
       <v-spacer />
       <v-btn
