@@ -10,7 +10,7 @@ export default {
   },
 
   actions: {
-    LOAD_MATCHES({commit}) {
+    loadMatches({commit}) {
       Vue.$db.collection('matches')
         .get()
         .then(querySnapshot => {
@@ -20,17 +20,17 @@ export default {
             match.id = m.id;
             result.push(match);
           });
-          commit('SET_MATCHES', result);
+          commit('setMatches', result);
         })
         .catch(error => {
           // eslint-disable-next-line
-          console.log('LOAD_MATCHES: ERROR:', error)
+          console.log('loadMatches: ERROR:', error)
         });
     },
   },
 
   mutations: {
-    SET_MATCHES(state, payload) {
+    setMatches(state, payload) {
       state.matches = payload;
     },
   },

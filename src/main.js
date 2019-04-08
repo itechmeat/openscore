@@ -42,7 +42,7 @@ new Vue({
     });
     const vm = this;
     firebase.auth().onAuthStateChanged(function(user) {
-      vm.$store.dispatch('STATE_CHANGED', user);
+      vm.$store.dispatch('stateChanged', user);
     });
   },
 }).$mount('#app');

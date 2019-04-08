@@ -5,10 +5,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "deploy": "firebase deploy",
+    "deploy-f": "firebase deploy --only functions",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "firebase": "^5.9.1",
+    "firebase-admin": "^7.2.0",
+    "firebase-functions": "^2.2.1",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
     "vue": "^2.6.6",

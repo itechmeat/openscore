@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     signOut() {
-      this.$store.dispatch(('SIGN_OUT'));
+      this.$store.dispatch(('signOut'));
     }
   },
 }

@@ -4,7 +4,7 @@
       <v-content>
         <main-header back="/">
           <template #title>
-            {{ sportName }} Tournaments
+            {{ sportName }} Tournaments {{ tested }}
           </template>
           <template v-if="isUserAuthenticated" #actions>
             <v-btn v-if="connection" flat @click.stop="editTournament(null)">Add Tournament</v-btn>
@@ -88,9 +88,9 @@ export default {
 
   created() {
     if (!this.$store.getters.getConnectedStatus) {
-      this.$store.dispatch('LOAD_LOCAL_TOURNAMENTS');
+      this.$store.dispatch('loadLocalTournaments');
     } else {
-      this.$store.dispatch('LOAD_TOURNAMENTS');
+      this.$store.dispatch('loadTournaments');
     }
   },
 
@@ -152,8 +152,8 @@ export default {
     },
 
     userId() {
-      return this.$store.getters.userId;
-    }
+      return this.$store.getters.getUserId;
+    },
   },
 
   methods: {
@@ -175,12 +175,12 @@ export default {
     },
 
     save() {
-      this.$store.dispatch('SAVE_TOURNAMENT', this.editedTournament)
+      this.$store.dispatch('saveTournament', this.editedTournament)
         .then(() => this.dialog = false);
     },
 
     remove() {
-      this.$store.dispatch('REMOVE_TOURNAMENT', this.editedTournament.id)
+      this.$store.dispatch('removeTournament', this.editedTournament.id)
         .then(() => this.dialog = false);
     },
   },

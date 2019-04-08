@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     signIn() {
-      this.$store.dispatch('SIGN_IN', {email: this.email, password: this.password});
+      this.$store.dispatch('signIn', {email: this.email, password: this.password});
     },
   },
 };

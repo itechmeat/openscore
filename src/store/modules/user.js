@@ -8,64 +8,73 @@ export default {
       uid: null,
     },
   },
+
+  getters: {
+    isUserAuthenticated: (state) => state.user.isAuthenticated,
+    getUserId: (state) => state.user.uid,
+  },
+
   actions: {
-    SIGN_UP({commit}, payload) {
-      commit('SET_PROCESSING', true);
-      commit('CLEAR_ERROR');
+    signUp({commit}, payload) {
+      commit('setProcessing', true);
+      commit('clearError');
+
       firebase.auth()
         .createUserWithEmailAndPassword(payload.email, payload.password)
         .then(user => {
           // eslint-disable-next-line
-          console.log('SIGN_UP', user);
-          commit('SET_PROCESSING', false);
+          console.log('signUp', user);
+          commit('setProcessing', false);
         })
         .catch(function(error) {
           // eslint-disable-next-line
           console.log(error);
-          commit('SET_PROCESSING', false);
-          commit('SET_ERROR', error.message);
+          commit('setProcessing', false);
+          commit('setError', error.message);
         });
     },
-    SIGN_IN({commit}, payload) {
-      commit('SET_PROCESSING', true);
-      commit('CLEAR_ERROR');
+
+    signIn({commit}, payload) {
+      commit('setProcessing', true);
+      commit('clearError');
+
       firebase.auth()
         .signInWithEmailAndPassword(payload.email, payload.password)
         .then(user => {
           // eslint-disable-next-line
-          console.log('SIGN_IN', user);
-          commit('SET_PROCESSING', false);
+          console.log('signIn', user);
+          commit('setProcessing', false);
         })
         .catch(function(error) {
           // eslint-disable-next-line
           console.log(error);
-          commit('SET_PROCESSING', false);
-          commit('SET_ERROR', error.message);
+          commit('setProcessing', false);
+          commit('setError', error.message);
         });
     },
-    SIGN_OUT() {
+
+    signOut() {
       firebase.auth().signOut();
     },
-    STATE_CHANGED({commit}, payload) {
+
+    stateChanged({commit}, payload) {
       if (payload) {
-        commit('SET_USER', payload.uid);
+        commit('setUser', payload.uid);
         return;
       }
-      commit('UNSET_USER');
+      commit('unsetUser');
     },
   },
+
   mutations: {
-    SET_USER(state, payload) {
+    setUser(state, payload) {
       state.user.isAuthenticated = true;
       state.user.uid = payload;
     },
-    UNSET_USER(state) {
+
+    unsetUser(state) {
       state.user.isAuthenticated = false;
       state.user.uid = null;
     },
-  },
-  getters: {
-    isUserAuthenticated: (state) => state.user.isAuthenticated,
-    userId: (state) => state.user.uid,
   },
 };

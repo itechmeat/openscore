@@ -12,7 +12,7 @@ export default {
   },
 
   actions: {
-    LOAD_TOURNAMENTS({commit}) {
+    loadTournaments({commit}) {
       Vue.$db.collection('tournaments')
         .get()
         .then(querySnapshot => {
@@ -22,35 +22,32 @@ export default {
             tournament.id = t.id;
             result.push(tournament);
           });
-          commit('SET_TOURNAMENTS', result);
+          commit('setTournaments', result);
         })
         .then(() => {
-          if (!this.state.tournaments || this.state.tournaments.length === 0) {
-            return;
-          }
+          if (!this.state.tournaments || this.state.tournaments.length === 0) return;
           localStorage.setItem('tournaments', JSON.stringify(this.state.tournaments));
         })
         .catch(error => {
           // eslint-disable-next-line
-          console.log('LOAD_TOURNAMENTS: ERROR:', error)
+          console.log('loadTournaments: ERROR:', error)
         });
     },
 
-    LOAD_LOCAL_TOURNAMENTS({commit}) {
+    loadLocalTournaments({commit}) {
       const data = JSON.parse(localStorage.getItem('tournaments'));
-      commit('SET_TOURNAMENTS', data.tournaments);
+      commit('setTournaments', data.tournaments);
     },
 
-    SAVE_TOURNAMENT({dispatch}, payload) {
+    saveTournament({dispatch}, payload) {
       const server = Vue.$db.collection('tournaments');
       const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp();
-      // const setTimestamp = firebase.firestore.FieldValue.serverTimestamp();
       if (!payload.id) {
         server.add({
           ...payload,
           creation_date: serverTimestamp,
         })
-          .then(() => dispatch('LOAD_TOURNAMENTS'));
+          .then(() => dispatch('loadTournaments'));
         return;
       }
       server.doc(payload.id)
@@ -58,17 +55,17 @@ export default {
           ...payload,
           modification_date: serverTimestamp,
         })
-        .then(() => dispatch('LOAD_TOURNAMENTS'));
+        .then(() => dispatch('loadTournaments'));
     },
 
-    REMOVE_TOURNAMENT({dispatch}, payload) {
+    removeTournament({dispatch}, payload) {
       Vue.$db.collection('tournaments').doc(payload).delete()
-        .then(() => dispatch('LOAD_TOURNAMENTS'));
+        .then(() => dispatch('loadTournaments'));
     },
   },
 
   mutations: {
-    SET_TOURNAMENTS(state, payload) {
+    setTournaments(state, payload) {
       state.tournaments = payload;
     },
   },

@@ -4,27 +4,33 @@ export default {
     processing: false,
     error: null,
   },
+
   getters: {
     getConnectedStatus: state => state.connected,
     getProcessing: (state) => state.processing,
     getError: (state) => state.error,
   },
+
   actions: {
     setConnected (context, status) {
       context.commit('setConnected', status)
     },
   },
+
   mutations: {
     setConnected (state, payload) {
       state.connected = payload
     },
-    SET_PROCESSING(state, payload) {
+
+    setProcessing(state, payload) {
       state.processing = payload;
     },
-    SET_ERROR(state, payload) {
+
+    setError(state, payload) {
       state.error = payload;
     },
-    CLEAR_ERROR(state) {
+
+    clearError(state) {
       state.error = null;
     },
   },
