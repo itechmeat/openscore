@@ -1,13 +1,11 @@
 <template>
   <v-card>
-    <v-toolbar>
-      <v-toolbar-title>Sign Up</v-toolbar-title>
-    </v-toolbar>
-    <v-card-text>
-      <v-alert
-        :value="error"
-        type="warning"
-      >
+    <v-card-title class="grey lighten-4 py-4 title">
+      Sign Up
+    </v-card-title>
+
+    <v-container grid-list-sm class="pa-4">
+      <v-alert :value="error" type="warning">
         {{ error }}
       </v-alert>
 
@@ -21,6 +19,7 @@
           required
           :rules="emailRules"
         />
+
         <v-text-field
           v-model="password"
           prepend-icon="lock"
@@ -31,13 +30,12 @@
           :rules="passwordRules"
         />
       </v-form>
-    </v-card-text>
+    </v-container>
+
     <v-card-actions>
+      <v-btn flat @click="dialog = false">Cancel</v-btn>
       <v-spacer />
-      <v-btn
-        :disabled="processing || !valid"
-        @click.prevent="signUp"
-      >
+      <v-btn flat color="primary" :disabled="processing || !valid" @click.prevent="signUp">
         Sign Up
       </v-btn>
     </v-card-actions>
@@ -62,17 +60,21 @@ export default {
       ],
     };
   },
+
   computed: {
     error() {
       return this.$store.getters.getError;
     },
+
     processing() {
       return this.$store.getters.getProcessing;
     },
+
     isUserAuthenticated() {
       return this.$store.getters.isUserAuthenticated;
     },
   },
+
   methods: {
     signUp() {
       this.$store.dispatch('signUp', {email: this.email, password: this.password});

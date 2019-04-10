@@ -267,7 +267,8 @@ $mainSize: 20vh;
   right: 0;
   bottom: 0;
   left: 0;
-  background: $c_bg;
+  background: $c_dark;
+  color: $c_light;
   font-size: 5vw;
   user-select: none;
 }

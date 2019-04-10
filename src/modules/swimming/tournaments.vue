@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import Layout from '@/components/Layout';
-import MainHeader from '@/components/Header';
+import Layout from '@/components/Layout/Default';
+import MainHeader from '@/components/Common/Header';
 
 export default {
   components: {

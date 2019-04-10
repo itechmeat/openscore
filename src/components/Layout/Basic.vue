@@ -13,7 +13,8 @@
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  background: $c_bg;
+  background: $c_dark;
+  color: $c_light;
 }
 
 main {

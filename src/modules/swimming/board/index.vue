@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Layout from '@/components/Layout';
+import Layout from '@/components/Layout/Basic';
 import BoardHeader from '@/components/Board/Header';
 import BoardTable from '@/components/Board/Table';
 

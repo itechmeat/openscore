@@ -1,35 +1,29 @@
 <template>
-  <v-app dark>
-    <layout>
-      <v-content>
-        <main-header>
-          <template #title>
-            Sports Dashboard
-          </template>
-        </main-header>
+  <layout title="Sports Dashboard">
+    <v-container grid-list-xl fluid>
+      <v-layout row>
+        <v-flex xs12>
+          <h2>All sports</h2>
+        </v-flex>
+      </v-layout>
 
-        <v-container grid-list-xl>
-          <v-layout row>
-            <v-flex xs12>
-              <router-link to="/swimming">
-                Swimming
-              </router-link>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-content>
-    </layout>
-  </v-app>
+      <v-layout row wrap>
+        <v-flex xs4>
+          <router-link to="/swimming">
+            Swimming
+          </router-link>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </layout>
 </template>
 
 <script>
-import Layout from '@/components/Layout';
-import MainHeader from '@/components/Header';
+import Layout from '@/components/Layout/Default';
 
 export default {
   components: {
     Layout,
-    MainHeader,
   },
 };
 </script>
