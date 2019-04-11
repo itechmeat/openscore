@@ -9,6 +9,10 @@
 ### Demo of scoreboard and control panel on mobile device
 ![OpenBoard screencast](http://files.techmeat.net/match.gif)
 
+[Live demo of control panel](https://openscore.app/swimming/control) (for mobile devices)
+
+[Live demo of scoreboard](https://openscore.app/swimming/board) (for wide screen)
+
 ### Project setup
 `npm install`
 
