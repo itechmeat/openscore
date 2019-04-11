@@ -1,59 +1,58 @@
 # OpenScore
 
-![vodeo](http://files.techmeat.net/match.webm)
+#### Scoreboard for swimming competitions
 
-## Project setup
-```
-npm install
-```
+### Technical stack
+- Front-end: **Vue.js**
+- Back-end: **Firebase**
 
-## Firebase setup
-```
-npm install -g firebase-tools
-```
+### Demo of scoreboard and control panel on mobile device
+![OpenBoard screencast](http://files.techmeat.net/match.gif)
+
+### Project setup
+`npm install`
+
+`npm install -g firebase-tools`
+
 
 ### Compiles and hot-reloads for development
-```
-npm run serve
-```
+`npm run serve`
 
 ### Compiles and minifies for production
-```
-npm run build
-```
+`npm run build`
 
 ### Deploy to Firebase
-```
-firebase deploy
-```
+`firebase deploy` or `npm run deploy` - deploy all project
+
+`firebase deploy --only functions` or `npm run deploy-f` - deploy only functions
 
 ### Font for digits
 [7segment](http://torinak.com/7segment)
 
 
-### URLs
+### URLs (plan)
 | URL | Page |
 |-----|------|
-|`root`|homepage|
-|`root/swimming`|page of sport|
-|`root/swimming/tournaments`|list of sport's tournaments|
-|`root/swimming/tournaments/create`|create new tournament|
-|`root/swimming/tournaments/{id}`|page of tournament|
-|`root/swimming/tournaments/{id}/edit`|edit tournament|
-|`root/swimming/tournaments/{id}/matches`|list of matches|
-|`root/swimming/tournaments/{id}/matches/create`|create new match|
-|`root/swimming/tournaments/{id}/matches/{id}`|page of match|
-|`root/swimming/tournaments/{id}/matches/{id}/edit`|edit match|
-|`root/swimming/tournaments/{id}/matches/{id}/board`|live scoreboard of the match|
-|`root/swimming/tournaments/{id}/matches/{id}/console`|live console of the match|
-|`root/swimming/tournaments/{id}/matches/{id}/admin`|admin panel of the match|
-|`root/teams`|list of teams|
-|`root/teams/create`|create new team|
-|`root/teams/{id}`|page of team|
-|`root/teams/{id}/edit`|edit team|
-|`root/players`|list of players|
-|`root/players/create`|create new player|
-|`root/players/{id}`|page of player|
-|`root/players/{id}/edit`|edit player|
-|`root/profile`|user's profile|
-|`root/profile/edit`|edit user's profile|
+|`root`|Home Page|
+|`root/swimming`|Main page of sport with description and popular tournaments|
+|`root/swimming/tournaments`|List of sport's tournaments|
+|`root/swimming/tournaments/create`|Create new tournament|
+|`root/swimming/tournaments/{id}`|Page of tournament|
+|`root/swimming/tournaments/{id}/edit`|Edit tournament|
+|`root/swimming/tournaments/{id}/matches`|List of matches|
+|`root/swimming/tournaments/{id}/matches/create`|Create new match|
+|`root/swimming/tournaments/{id}/matches/{id}`|Page of match|
+|`root/swimming/tournaments/{id}/matches/{id}/edit`|Edit match|
+|`root/swimming/tournaments/{id}/matches/{id}/board`|Live scoreboard of the match|
+|`root/swimming/tournaments/{id}/matches/{id}/console`|Live console of the match|
+|`root/swimming/tournaments/{id}/matches/{id}/admin`|Admin panel of the match|
+|`root/teams`|List of teams|
+|`root/teams/create`|Create new team|
+|`root/teams/{id}`|Page of team|
+|`root/teams/{id}/edit`|Edit team|
+|`root/players`|List of players|
+|`root/players/create`|Create new player|
+|`root/players/{id}`|Page of player|
+|`root/players/{id}/edit`|Edit player|
+|`root/profile`|User's profile|
+|`root/profile/edit`|Edit user's profile|
