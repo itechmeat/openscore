@@ -1,6 +1,7 @@
 # OpenScore
 
 #### Scoreboard for swimming competitions
+v0.1.1
 
 ### Technical stack
 - Front-end: **Vue.js**

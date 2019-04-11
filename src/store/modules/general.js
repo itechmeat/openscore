@@ -13,13 +13,13 @@ export default {
 
   actions: {
     setConnected (context, status) {
-      context.commit('setConnected', status)
+      context.commit('setConnected', status);
     },
   },
 
   mutations: {
     setConnected (state, payload) {
-      state.connected = payload
+      state.connected = payload;
     },
 
     setProcessing(state, payload) {

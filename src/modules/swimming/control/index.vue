@@ -1,13 +1,8 @@
 <template>
   <div v-if="match" class="control">
-    <div
-      class="main"
-      :class="[{'started': isStarted}, {'finished': isFinished}]"
-    >
-      <div
-        class="start"
-        @click="startMatch"
-      >
+    <div v-if="!isUserAuthenticated" class="demo">Demo mode!<br>You don't have permission to save the results!</div>
+    <div class="main" :class="[{'started': isStarted}, {'finished': isFinished}]">
+      <div class="start" @click="startMatch">
         <stop-watch
           v-show="isStarted || isFinished"
           ref="stopWatch"
@@ -74,6 +69,10 @@ export default {
   },
 
   computed: {
+    isUserAuthenticated() {
+      return this.$store.getters.isUserAuthenticated;
+    },
+
     match() {
       return this.$store.getters.getFakeMatchControl;
     },
@@ -273,6 +272,15 @@ $mainSize: 20vh;
   user-select: none;
 }
 
+.demo {
+  flex: 0 0 auto;
+  padding: 1vw;
+  border-bottom: 2px solid $c_dark;
+  background: $c_accent;
+  color: $c_warning;
+  font-size: 3.5vw;
+}
+
 .main {
   flex: 0 0 $mainSize;
   display: flex;
@@ -331,16 +339,16 @@ $mainSize: 20vh;
   align-items: center;
   justify-content: center;
   width: $mainSize / 2;
-  border-left: 2px solid $c_bg;
+  border-left: 2px solid $c_dark;
 
   &.reset {
     background: $c_warning;
-    border-bottom: 1px solid $c_bg;
+    border-bottom: 1px solid $c_dark;
   }
 
   &.next {
     background: $c_info;
-    border-top: 1px solid $c_bg;
+    border-top: 1px solid $c_dark;
   }
 }
 

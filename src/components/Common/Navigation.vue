@@ -1,8 +1,9 @@
 <template>
   <v-navigation-drawer
-    fixed
-    :clipped="$vuetify.breakpoint.mdAndUp"
     app
+    fixed
+    class="navigation"
+    :clipped="$vuetify.breakpoint.mdAndUp"
     :value="isActive"
   >
     <v-list dense>
@@ -17,6 +18,10 @@
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
+
+    <v-spacer />
+
+    <v-layout pa-3 caption class="version">v{{ version }}</v-layout>
   </v-navigation-drawer>
 </template>
 
@@ -28,8 +33,25 @@ export default {
       type: Array,
       default() {
         return [];
-      }
-    }
+      },
+    },
   },
+
+  computed: {
+    version() {
+      return process.env.VUE_APP_VERSION;
+    }
+  }
 }
 </script>
+
+<style scoped>
+.navigation {
+  display: flex;
+  flex-direction: column;
+}
+
+.version {
+  flex: 0 0 auto;
+}
+</style>

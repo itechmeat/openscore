@@ -57,12 +57,12 @@ export default {
       return this.$store.getters.getConnectedStatus;
     },
 
-    tournaments() {
-      return this.$store.getters.getTournaments;
-    },
-
     isUserAuthenticated() {
       return this.$store.getters.isUserAuthenticated;
+    },
+
+    tournaments() {
+      return this.$store.getters.getTournaments;
     },
 
     userId() {

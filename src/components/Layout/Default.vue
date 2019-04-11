@@ -81,8 +81,8 @@ export default {
     navigationItems() {
       return [
         this.back ? { icon: 'arrow_back', text: 'Back', link: this.back } : undefined,
-        { icon: 'settings', text: 'Settings', link: '/settings' },
-        { icon: 'help', text: 'Help', link: '/help' },
+        { icon: 'settings', text: 'Settings (404)', link: '/settings' },
+        { icon: 'help', text: 'Help (404)', link: '/help' },
       ].filter(item => item !== undefined);
     },
   },

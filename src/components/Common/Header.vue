@@ -8,7 +8,7 @@
   >
     <v-toolbar-title>
       <v-toolbar-side-icon @click="$emit('drawer')" />
-      <span class="hidden-xs-only">{{ title }}</span>
+      <span class="hidden-xs-only">{{ title || appName }}</span>
     </v-toolbar-title>
     <v-spacer />
 
@@ -27,10 +27,16 @@ export default {
     title: {
       type: String,
       default() {
-        return null;
+        return process.env.VUE_APP_NAME;
       },
     },
     isUserAuthenticated: Boolean,
+  },
+
+  computed: {
+    appName() {
+      return process.env.VUE_APP_NAME;
+    }
   },
 
   methods: {
