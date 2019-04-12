@@ -1,6 +1,6 @@
 <template>
   <div v-if="match" class="control">
-    <div v-if="!isUserAuthenticated" class="demo">Demo mode!<br>You don't have permission to save the results!</div>
+    <div v-if="!isUserAuthenticated" class="demo">Demo mode! <br>You don't have permission to save the results!</div>
     <div class="main" :class="[{'started': isStarted}, {'finished': isFinished}]">
       <div class="start" @click="startMatch">
         <stop-watch
@@ -23,11 +23,12 @@
       </div>
     </div>
 
-    <div class="grid">
+    <div class="grid" :class="'grid-' + orderedPlayers.length">
       <Player
-        v-for="player in orderedPlayers"
+        v-for="(player, index) in orderedPlayers"
         :key="player.line"
         :player="player"
+        :index="index + 1"
         :is-failed-button-visible="!isWait && !player.time && !player.fail && player.access && isFailedButtonsVisible"
         @finish="pushLap(player.line)"
         @fail="fail(player.line)"
@@ -270,6 +271,10 @@ $mainSize: 20vh;
   color: $c_light;
   font-size: 5vw;
   user-select: none;
+
+  @media (orientation: landscape) {
+    font-size: 5vh;
+  }
 }
 
 .demo {
@@ -279,6 +284,14 @@ $mainSize: 20vh;
   background: $c_accent;
   color: $c_warning;
   font-size: 3.5vw;
+
+  @media (orientation: landscape) {
+    font-size: 3.5vh;
+
+    br {
+      display: none;
+    }
+  }
 }
 
 .main {
@@ -304,6 +317,10 @@ $mainSize: 20vh;
   font-size: 10vw;
   text-transform: uppercase;
   cursor: pointer;
+
+  @media (orientation: landscape) {
+    font-size: 10vh;
+  }
 }
 
 .label {
@@ -324,6 +341,10 @@ $mainSize: 20vh;
   font-family: $ff_digit;
   font-size: 18vw;
   font-weight: 500;
+
+  @media (orientation: landscape) {
+    font-size: 16vh;
+  }
 }
 
 .actions {
@@ -331,6 +352,11 @@ $mainSize: 20vh;
   flex-direction: column;
   align-items: stretch;
   flex: 0 0 $mainSize / 2;
+
+  @media (orientation: landscape) {
+    flex-basis: $mainSize * 2;
+    flex-direction: row;
+  }
 }
 
 .action {
@@ -350,6 +376,18 @@ $mainSize: 20vh;
     background: $c_info;
     border-top: 1px solid $c_dark;
   }
+
+  @media (orientation: landscape) {
+    flex: 0 0 $mainSize;
+
+    &.reset {
+      border-bottom: none;
+    }
+
+    &.next {
+      border-top: none;
+    }
+  }
 }
 
 .grid {
@@ -357,5 +395,16 @@ $mainSize: 20vh;
   display: flex;
   flex-direction: column;
   height: 80vh;
+
+  @media (orientation: landscape) {
+    display: block;
+    column-count: 2;
+    column-gap: 2px;
+
+    &-1,
+    &-2 {
+      column-count: 1;
+    }
+  }
 }
 </style>

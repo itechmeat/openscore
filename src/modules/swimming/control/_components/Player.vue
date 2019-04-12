@@ -1,5 +1,10 @@
 <template>
-  <div v-if="player" class="cell" @click="handleFinish">
+  <div
+    v-if="player"
+    class="cell"
+    :class="'cell-' + index"
+    @click="handleFinish"
+  >
     <div
       class="button"
       :class="[{'finished': !!player.time}, {'failed': player.fail}, {'passive': !player.access}]"
@@ -29,6 +34,12 @@ export default {
       type: Object,
       default() {
         return null;
+      },
+    },
+    index: {
+      type: Number,
+      default() {
+        return 0;
       },
     },
     isFailedButtonVisible: Boolean,
@@ -70,6 +81,29 @@ $mainSize: 20vh;
   height: 16%;
   max-height: $mainSize;
   margin-top: 2px;
+
+  @media (orientation: landscape) {
+    flex: 0 0 50vw;
+    align-items: stretch;
+    overflow: hidden;
+    height: calc(25% - 3px);
+    max-height: 20vw;
+    margin: 0;
+    border-top: 2px solid $c_dark;
+
+    .grid-1 &,
+    .grid-2 &,
+    .grid-3 &,
+    .grid-4 &,
+    .grid-5 & {
+      height: calc(50% - 1px);
+    }
+
+    .grid-6 &,
+    .grid-7 & {
+      height: calc((100% / 3) - 4px);
+    }
+  }
 }
 
 .button {
@@ -126,6 +160,10 @@ $mainSize: 20vh;
   font-family: $ff_digit;
   font-size: 8vw;
   font-weight: 500;
+
+  @media (orientation: landscape) {
+    font-size: 8vh;
+  }
 }
 
 .fail {
@@ -137,7 +175,7 @@ $mainSize: 20vh;
   right: 0;
   height: 100%;
   width: $mainSize / 2;
-  border-left: 2px solid $c_bg;
+  border-left: 2px solid $c_dark;
   background: $c_warning;
   text-align: center;
   cursor: pointer;
@@ -151,6 +189,10 @@ $mainSize: 20vh;
 
   .failed & {
     display: none;
+  }
+
+  @media (orientation: landscape) {
+    width: $mainSize;
   }
 }
 </style>
