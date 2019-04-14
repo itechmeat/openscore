@@ -111,32 +111,58 @@ header {
   justify-content: space-between;
   min-height: $g*14;
   padding: $g $g*2;
+
+  @media (orientation: portrait) {
+    flex-wrap: wrap;
+    padding-top: $g*3;
+    padding-bottom: $g*3;
+  }
 }
 
 .main {
   flex: 0 0 auto;
   margin-right: $g*4;
+
+  @media (orientation: portrait) {
+    flex: 0 0 100%;
+    margin-bottom: 4vw;
+    text-align: center;
+  }
 }
 
 h1 {
   margin: 0;
-  font-size: $fs_board_headline;
+  font-size: 5vw;
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.5vw;
+
+  @media (orientation: portrait) {
+    font-size: 9vw;
+  }
 }
 
 .clock,
 .connection {
   flex: 1;
   color: $c_text_hint;
-  font-size: $fs_board_headline;
+  font-size: 5vw;
   font-weight: 500;
   text-align: center;
+
+  @media (orientation: portrait) {
+    font-size: 12vw;
+    text-align: right;
+  }
 }
 
 .clock {
   font-family: $ff_digit;
+
+  @media (orientation: portrait) {
+    order: 3;
+    margin-right: $g*4;
+  }
 }
 
 .connection,
@@ -155,18 +181,24 @@ h1 {
 .info {
   flex: 0 0 auto;
   display: flex;
-  font-size: $fs_board_large;
+  font-size: 3.2vw;
   text-align: right;
+
+  @media (orientation: portrait) {
+    display: block;
+    font-size: 5vw;
+    text-align: left;
+  }
 }
 
 .line {
   margin-left: $g*4;
   letter-spacing: -0.2vw;
-}
 
-.label,
-.value {
-  display: table-cell;
+  @media (orientation: portrait) {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .value {

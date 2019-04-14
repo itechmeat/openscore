@@ -47,6 +47,9 @@
             <span v-else :class="column.name">
               {{ player[column.name] }}
             </span>
+            <div v-if="column.name === 'name'" class="team-v">
+              {{ player.team }}
+            </div>
           </template>
         </div>
       </div>
@@ -117,6 +120,10 @@ export default {
   font-size: $fs_board_base;
   line-height: 1;
   white-space: nowrap;
+
+  @media (orientation: portrait) {
+    font-size: 4vw;
+  }
 }
 
 .row {
@@ -152,6 +159,23 @@ export default {
     width: 14vw;
     text-align: right;
   }
+
+  @media (orientation: portrait) {
+    .row_head & {
+      height: 12vw;
+    }
+
+    &_line,
+    &_place {
+      .row:not(.row_head) & {
+        font-size: 6.6vw;
+      }
+    }
+
+    &_team {
+      display: none;
+    }
+  }
 }
 
 .line {
@@ -171,6 +195,11 @@ export default {
   line-height: 1;
   border: 2px solid transparent;
   border-radius: 50%;
+
+  @media (orientation: portrait) {
+    width: 8vw;
+    height: 8vw;
+  }
 }
 
 .place-1 {
@@ -193,11 +222,25 @@ export default {
   font-family: $ff_digit;
   font-size: 3.6vw;
   font-weight: 500;
+
+  @media (orientation: portrait) {
+    font-size: 7vw;
+  }
 }
 
 .row_head,
 .name,
 .team {
   letter-spacing: -0.2vw;
+}
+
+.team-v {
+  display: none;
+
+  @media (orientation: portrait) {
+    display: block;
+    margin-top: 1vw;
+    opacity: .4;
+  }
 }
 </style>
