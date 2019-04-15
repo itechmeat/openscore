@@ -83,14 +83,14 @@ export const DESKS = SPORTS.map(sport => {
   };
 });
 
-function _setOptions(sport, path, name) {
+function _setOptions(sport, path, name, props) {
   return {
     path,
     name,
     props: {
+      ...props,
       sportName: sport.name,
       sportSlug: sport.slug,
     }
   }
 }
-

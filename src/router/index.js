@@ -1,14 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import {
-  MODULES,
-  TOURNAMENTS,
-  TOURNAMENT,
-  TOURNAMENT_FORM,
-  BOARDS,
-  CONTROL,
-  DESKS,
-} from '../router/sports';
+import * as pages from '../router/sports';
 
 Vue.use(Router);
 
@@ -21,13 +13,13 @@ export default new Router({
       name: 'home',
       component: () => import('../views/Home'),
     },
-    ...MODULES,
-    ...TOURNAMENTS,
-    ...TOURNAMENT,
-    ...TOURNAMENT_FORM,
-    ...BOARDS,
-    ...CONTROL,
-    ...DESKS,
+    ...pages.MODULES,
+    ...pages.TOURNAMENTS,
+    ...pages.TOURNAMENT,
+    ...pages.TOURNAMENT_FORM,
+    ...pages.BOARDS,
+    ...pages.CONTROL,
+    ...pages.DESKS,
     {
       path: '*',
       name: '404',
