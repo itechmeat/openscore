@@ -20,28 +20,16 @@
 </template>
 
 <script>
+import tournament from '../../lib/mixins/tournament';
 import Layout from '@/components/Layout/Default';
 import TournamentCard from '@/components/TournamentCard';
 
 export default {
+  mixins: [tournament],
+
   components: {
     Layout,
     TournamentCard,
-  },
-
-  props: {
-    sportName: {
-      type: String,
-      default() {
-        return null;
-      },
-    },
-    sportSlug: {
-      type: String,
-      default() {
-        return null;
-      },
-    },
   },
 
   created() {
@@ -50,6 +38,11 @@ export default {
     } else {
       this.$store.dispatch('loadTournaments');
     }
+  },
+
+  metaInfo: {
+    title: 'Swimming Tournaments',
+    titleTemplate: null,
   },
 
   computed: {
