@@ -67,7 +67,7 @@ export default {
 
   data: () => ({
     dialog: false,
-    drawer: true,
+    drawer: null,
 
     SignUpDialog: false,
     SignInDialog: false,

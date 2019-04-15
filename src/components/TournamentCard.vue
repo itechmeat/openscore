@@ -7,15 +7,20 @@
       <v-img
         class="blue white--text"
         height="200px"
-        :src="tournament.cover || undefined"
+        :src="coverUrl"
         :to="$route.name + '/board'"
       >
-        <h1 class="headline">
-          {{ tournament.title }}
-        </h1>
-        <p>{{ tournament.level }}</p>
-        <p v-if="connection">{{ tournament.start_date | luxon:format('dd LLLL y') }} - {{ tournament.end_date | luxon:format('dd LLLL y') }}</p>
-        <p>{{ tournament.start_date }}</p>
+        <v-flex class="card-content">
+          <h2 v-if="!single" class="headline">
+            {{ tournament.title }}
+          </h2>
+          <h1 v-else class="headline">
+            {{ tournament.title }}
+          </h1>
+          <p>{{ tournament.level }}</p>
+          <p v-if="connection">{{ tournament.start_date | luxon:format('dd LLLL y') }} - {{ tournament.end_date | luxon:format('dd LLLL y') }}</p>
+          <p>{{ tournament.start_date }}</p>
+        </v-flex>
       </v-img>
     </router-link>
     <v-card-actions>
@@ -65,11 +70,16 @@ export default {
         return null;
       },
     },
+    single: Boolean,
   },
   computed: {
     connection() {
       return this.$store.getters.getConnectedStatus;
     },
+
+    coverUrl() {
+      return this.tournament.cover === 'null' ? this.tournament.cover : `/placeholders/tournament_${this.sportSlug}.jpg`;
+    }
   },
 };
 </script>
@@ -77,5 +87,9 @@ export default {
 <style lang="scss" scoped>
 .card-link {
   text-decoration: none;
+}
+
+.card-content {
+  text-shadow: 1px 1px 1px $c_text;
 }
 </style>

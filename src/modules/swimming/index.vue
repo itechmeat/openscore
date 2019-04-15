@@ -8,7 +8,7 @@
       </v-layout>
 
       <v-layout v-if="tournaments.length > 0" row wrap>
-        <v-flex v-for="tournament in tournaments" xs4 :key="tournament.id">
+        <v-flex v-for="tournament in tournaments" xs12 sm6 md4 xl3 :key="tournament.id">
           <tournament-card
             :sport-slug="sportSlug"
             :tournament="tournament"
