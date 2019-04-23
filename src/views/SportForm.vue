@@ -1,5 +1,5 @@
 <template>
-  <layout title="Edit Tournament" back="/">
+  <layout title="Edit Tournament" :back="`/${sportSlug}`">
     <v-container grid-list-xl>
       <v-layout row>
         <v-flex xs12>
@@ -9,8 +9,9 @@
           <br>
           {{ $route.params.id }}
           <tournament-form
+            v-if="editedTournament"
             v-model="editedTournament"
-            :is-new="!tournamentId"
+            @save="save"
           />
         </v-flex>
       </v-layout>
@@ -43,8 +44,18 @@ export default {
     },
   },
 
-  beforeMount() {
-    this.editedTournament = this.tournamentModel;
+  created() {
+    if (!this.$store.getters.getConnectedStatus) {
+      this.$store.dispatch('loadLocalTournaments')
+        .then(() => {
+          this.fillData();
+        });
+    } else {
+      this.$store.dispatch('loadTournaments')
+        .then(() => {
+          this.fillData();
+        });
+    }
   },
 
   data() {
@@ -72,8 +83,44 @@ export default {
   },
 
   computed: {
-    tournamentId() {
-      return this.$route.params.id;
+    connection() {
+      return this.$store.getters.getConnectedStatus;
+    },
+
+    tournaments() {
+      return this.$store.getters.getTournaments;
+    },
+
+    isUserAuthenticated() {
+      return this.$store.getters.isUserAuthenticated;
+    },
+
+    userId() {
+      return this.$store.getters.getUserId;
+    },
+  },
+
+  methods: {
+    fillData() {
+      const tournamentId = this.$route.params.id;
+
+      if (!tournamentId) {
+        this.editedTournament = this.tournamentModel;
+        return;
+      }
+
+      this.editedTournament = this.tournaments.find(t => t.id = tournamentId);
+    },
+
+    save() {
+      this.$store.dispatch('saveTournament', this.editedTournament)
+        .then(id => {
+          this.$router.push({ path: `/${this.sportSlug}/tournaments/${id}` })
+        });
+    },
+
+    remove() {
+      this.$store.dispatch('removeTournament', this.editedTournament.id);
     },
   },
 };

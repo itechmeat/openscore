@@ -73,6 +73,19 @@
         </v-menu>
       </v-flex>
     </v-layout>
+
+    <v-layout row wrap>
+      <v-flex xs4>
+        <v-btn
+          large
+          block
+          :disabled="!isFormFilled"
+          @click="$emit('save')"
+        >
+          {{ !isNew ? 'Save Tournament' : 'Create Tournament' }}
+        </v-btn>
+      </v-flex>
+    </v-layout>
   </v-form>
 </template>
 
@@ -82,10 +95,9 @@ export default {
     value: {
       type: Object,
       default() {
-        return null;
+        return {};
       },
     },
-    isNew: Boolean,
   },
 
   data() {
@@ -101,6 +113,35 @@ export default {
         required: value => !!value || 'Required.',
       },
     };
+  },
+
+  computed: {
+    isNew() {
+      return this.value.id;
+    },
+
+    connection() {
+      return this.$store.getters.getConnectedStatus;
+    },
+
+    tournaments() {
+      return this.$store.getters.getTournaments;
+    },
+
+    isUserAuthenticated() {
+      return this.$store.getters.isUserAuthenticated;
+    },
+
+    userId() {
+      return this.$store.getters.getUserId;
+    },
+
+    isFormFilled() {
+      if (!this.value) {
+        return;
+      }
+      return !!this.value.title && !!this.value.start_date && !!this.value.end_date;
+    },
   },
 };
 </script>

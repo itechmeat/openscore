@@ -14,17 +14,8 @@
       <slot />
     </v-content>
 
-    <v-btn
-      fab
-      bottom
-      right
-      color="pink"
-      dark
-      fixed
-      @click.stop="dialog = !dialog"
-    >
-      <v-icon>add</v-icon>
-    </v-btn>
+
+    <slot name="actions" />
 
     <v-dialog v-if="!isUserAuthenticated" v-model="SignUpDialog" max-width="600px">
       <sign-up @close="SignUpDialog = false" />

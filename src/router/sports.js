@@ -28,6 +28,17 @@ export const TOURNAMENTS = SPORTS.map(sport => {
   };
 });
 
+export const TOURNAMENT_CREATE = SPORTS.map(sport => {
+  return {
+    ..._setOptions(
+      sport,
+      '/' + sport.slug + '/create',
+      sport.slug + '_tournament_create',
+    ),
+    component: () => import('../views/SportForm.vue'),
+  };
+});
+
 export const TOURNAMENT = SPORTS.map(sport => {
   return {
     ..._setOptions(
@@ -39,7 +50,7 @@ export const TOURNAMENT = SPORTS.map(sport => {
   };
 });
 
-export const TOURNAMENT_FORM = SPORTS.map(sport => {
+export const TOURNAMENT_EDIT = SPORTS.map(sport => {
   return {
     ..._setOptions(
       sport,

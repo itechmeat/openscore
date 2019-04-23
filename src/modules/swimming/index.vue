@@ -16,6 +16,20 @@
         </v-flex>
       </v-layout>
     </v-container>
+
+    <template #actions>
+      <v-btn
+        :to="`/${sportSlug}/create`"
+        fab
+        bottom
+        right
+        color="pink"
+        dark
+        fixed
+      >
+        <v-icon>add</v-icon>
+      </v-btn>
+    </template>
   </layout>
 </template>
 
@@ -60,18 +74,6 @@ export default {
 
     userId() {
       return this.$store.getters.getUserId;
-    },
-  },
-
-  methods: {
-    save() {
-      this.$store.dispatch('saveTournament', this.editedTournament)
-        .then(() => this.dialog = false);
-    },
-
-    remove() {
-      this.$store.dispatch('removeTournament', this.editedTournament.id)
-        .then(() => this.dialog = false);
     },
   },
 };
