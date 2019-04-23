@@ -46,7 +46,7 @@
       <v-btn
         flat
         color="primary"
-        :to="`${sportSlug}/tournaments/${tournament.id}/edit`"
+        :to="`/${sportSlug}/tournaments/${tournament.id}/edit`"
         :disabled="false"
       >
         Edit

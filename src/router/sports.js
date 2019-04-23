@@ -46,7 +46,7 @@ export const TOURNAMENT = SPORTS.map(sport => {
       '/' + sport.slug + '/tournaments/:id',
       sport.slug + '_tournament',
     ),
-    component: () => import('../modules/' + sport.slug + '/tournaments.vue'),
+    component: () => import('../modules/' + sport.slug + '/tournament.vue'),
   };
 });
 

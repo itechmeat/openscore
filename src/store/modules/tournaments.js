@@ -42,8 +42,8 @@ export default {
     async saveTournament({dispatch}, payload) {
       const server = Vue.$db.collection('tournaments');
       const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp();
+      let res;
       if (!payload.id) {
-        let res;
         await server.add({
           ...payload,
           creation_date: serverTimestamp,
@@ -59,7 +59,10 @@ export default {
           ...payload,
           modification_date: serverTimestamp,
         })
-        .then(() => dispatch('loadTournaments'));
+        .then(() => {
+          dispatch('loadTournaments');
+        });
+      return payload.id;
     },
 
     removeTournament({dispatch}, payload) {
