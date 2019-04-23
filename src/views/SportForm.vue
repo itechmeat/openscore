@@ -13,6 +13,7 @@
             v-if="editedTournament"
             v-model="editedTournament"
             @save="save"
+            @remove="remove"
           />
         </v-flex>
       </v-layout>
@@ -127,6 +128,7 @@ export default {
 
     remove() {
       this.$store.dispatch('removeTournament', this.editedTournament.id);
+      this.$router.push({ path: `/${this.sportSlug}` })
     },
   },
 };

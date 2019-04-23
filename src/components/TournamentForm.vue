@@ -75,10 +75,23 @@
     </v-layout>
 
     <v-layout row wrap>
-      <v-flex xs4>
+      <v-flex v-if="!isNew" shrink>
         <v-btn
           large
-          block
+          color="error"
+          :disabled="!isFormFilled"
+          @click="$emit('remove')"
+        >
+          Delete
+        </v-btn>
+      </v-flex>
+
+      <v-spacer />
+
+      <v-flex shrink>
+        <v-btn
+          large
+          color="info"
           :disabled="!isFormFilled"
           @click="$emit('save')"
         >
