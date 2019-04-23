@@ -117,7 +117,7 @@ export default {
 
   computed: {
     isNew() {
-      return this.value.id;
+      return !this.value.id;
     },
 
     connection() {

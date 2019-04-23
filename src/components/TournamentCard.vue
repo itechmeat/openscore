@@ -46,8 +46,8 @@
       <v-btn
         flat
         color="primary"
+        :to="`${sportSlug}/tournaments/${tournament.id}/edit`"
         :disabled="false"
-        @click="$emit('edit', tournament.id)"
       >
         Edit
       </v-btn>

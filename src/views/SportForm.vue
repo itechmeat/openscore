@@ -1,13 +1,14 @@
 <template>
   <layout title="Edit Tournament" :back="`/${sportSlug}`">
     <v-container grid-list-xl>
+      <v-layout v-if="editedTournament" row>
+        <v-flex xs12>
+          <h2>{{ !editedTournament.id ? 'Create new tournament' : 'Edit tournament' }}</h2>
+        </v-flex>
+      </v-layout>
+
       <v-layout row>
         <v-flex xs12>
-          {{ sportName }}
-          <br>
-          {{ sportSlug }}
-          <br>
-          {{ $route.params.id }}
           <tournament-form
             v-if="editedTournament"
             v-model="editedTournament"
@@ -46,15 +47,9 @@ export default {
 
   created() {
     if (!this.$store.getters.getConnectedStatus) {
-      this.$store.dispatch('loadLocalTournaments')
-        .then(() => {
-          this.fillData();
-        });
+      this.$store.dispatch('loadLocalTournaments');
     } else {
-      this.$store.dispatch('loadTournaments')
-        .then(() => {
-          this.fillData();
-        });
+      this.$store.dispatch('loadTournaments');
     }
   },
 
@@ -100,6 +95,17 @@ export default {
     },
   },
 
+  watch: {
+    tournaments: {
+      handler(val) {
+        if (!val) {
+          return;
+        }
+        this.fillData();
+      },
+    },
+  },
+
   methods: {
     fillData() {
       const tournamentId = this.$route.params.id;
@@ -109,7 +115,7 @@ export default {
         return;
       }
 
-      this.editedTournament = this.tournaments.find(t => t.id = tournamentId);
+      this.editedTournament = this.tournaments.find(t => t.id === tournamentId);
     },
 
     save() {
